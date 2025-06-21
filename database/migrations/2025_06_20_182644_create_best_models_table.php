@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('best_models', function (Blueprint $table) {
             $table->id();
-            $table->string('filename');
             $table->string('path');
             $table->foreignId('problem_detail_id')->constrained();
             $table->string('name');

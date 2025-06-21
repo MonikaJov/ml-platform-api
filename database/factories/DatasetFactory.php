@@ -16,7 +16,6 @@ class DatasetFactory extends Factory
         $filename = $this->faker->unique()->lexify('dataset_????.csv');
 
         return [
-            'filename' => $filename,
             'path' => 'uploads/'.$filename,
             'client_id' => Client::factory(),
             'has_null' => $this->faker->boolean(30),

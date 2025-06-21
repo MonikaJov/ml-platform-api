@@ -7,12 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property string $filename
  * @property string $path
  * @property int $client_id
  * @property bool $has_null
@@ -40,12 +38,6 @@ class Dataset extends Model
     public function problemDetail(): HasOne
     {
         return $this->hasOne(ProblemDetail::class);
-    }
-
-    /** @return HasOneThrough<BestModel, ProblemDetail, covariant Dataset> */
-    public function bestModel(): HasOneThrough
-    {
-        return $this->hasOneThrough(BestModel::class, ProblemDetail::class);
     }
 
     protected static function newFactory(): DatasetFactory

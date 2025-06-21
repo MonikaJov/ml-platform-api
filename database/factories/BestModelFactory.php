@@ -16,7 +16,6 @@ class BestModelFactory extends Factory
         $filename = $this->faker->unique()->lexify('model_??????.pkl');
 
         return [
-            'filename' => $filename,
             'path' => 'models/'.$filename.'.pkl',
             'name' => $this->faker->word.'Model',
             'problem_detail_id' => ProblemDetail::factory(),

@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
- * @property string $filename
  * @property string $path
  * @property int $problem_detail_id
  * @property string $name
