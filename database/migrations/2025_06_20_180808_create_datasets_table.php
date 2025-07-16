@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('datasets', function (Blueprint $table) {
             $table->id();
             $table->string('path');
-            $table->foreignId('client_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->boolean('has_null');
             $table->timestamps();
         });

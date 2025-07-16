@@ -13,7 +13,7 @@ class DatasetResource extends BaseJsonResource
         return [
             'id' => $this->id,
             'path' => $this->path,
-            'client' => ClientResource::make($this->whenLoaded('client')),
+            'user' => UserResource::make($this->whenLoaded('user')),
             'has_null' => $this->has_null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
