@@ -12,7 +12,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property string $path
- * @property int $client_id
+ * @property int $user_id
  * @property bool $has_null
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -28,10 +28,10 @@ class Dataset extends Model
         'has_null' => 'boolean',
     ];
 
-    /** @return BelongsTo<Client, covariant Dataset> */
-    public function client(): BelongsTo
+    /** @return BelongsTo<User, covariant Dataset> */
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(User::class);
     }
 
     /** @return HasOne<ProblemDetail, covariant Dataset> */

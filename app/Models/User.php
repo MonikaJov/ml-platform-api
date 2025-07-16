@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Database\Factories\ClientFactory;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,7 +15,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property int $id
  * @property string $username
  * @property string $email
- * @property Carbon $email_verified_at
+ * @property Carbon|null $email_verified_at
  * @property string $password
  * @property string $full_name
  * @property string|null $mobile
@@ -24,9 +24,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
-class Client extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject
 {
-    /** @use HasFactory<ClientFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
 
     use SoftDeletes;
@@ -42,7 +42,7 @@ class Client extends Authenticatable implements JWTSubject
         'password' => 'hashed',
     ];
 
-    /** @return HasMany<Dataset, covariant Client> */
+    /** @return HasMany<Dataset, covariant User> */
     public function datasets(): HasMany
     {
         return $this->hasMany(Dataset::class);
@@ -59,8 +59,8 @@ class Client extends Authenticatable implements JWTSubject
         return [];
     }
 
-    protected static function newFactory(): ClientFactory
+    protected static function newFactory(): UserFactory
     {
-        return ClientFactory::new();
+        return UserFactory::new();
     }
 }

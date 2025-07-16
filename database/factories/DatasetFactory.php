@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Client;
 use App\Models\Dataset;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
@@ -17,7 +17,7 @@ class DatasetFactory extends Factory
 
         return [
             'path' => 'uploads/'.$filename,
-            'client_id' => Client::factory(),
+            'user_id' => User::factory(),
             'has_null' => $this->faker->boolean(30),
             'created_at' => Carbon::now(),
         ];

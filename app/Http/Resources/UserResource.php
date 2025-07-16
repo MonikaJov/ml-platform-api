@@ -2,11 +2,11 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Client;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-/** @mixin Client */
-class ClientResource extends BaseJsonResource
+/** @mixin User */
+class UserResource extends BaseJsonResource
 {
     public function toArray(Request $request): array
     {
