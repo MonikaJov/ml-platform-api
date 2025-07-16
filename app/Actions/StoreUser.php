@@ -2,17 +2,17 @@
 
 namespace App\Actions;
 
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\AuthResource;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class Register
+class StoreUser
 {
     use AsAction;
 
-    public function handle(RegisterRequest $request): AuthResource
+    public function handle(StoreUserRequest $request): AuthResource
     {
         User::create(Arr::except($request->validated(), ['password_confirmation']));
 

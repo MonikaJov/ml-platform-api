@@ -1,5 +1,5 @@
 <?php
 
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\StoreUserController;
 
-Route::post('/api/register', RegisterController::class)->name('auth.register');
+Route::post('/register', StoreUserController::class)->name('auth.register');
