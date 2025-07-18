@@ -23,7 +23,7 @@ it('registers new users', function (array $userData) {
     expect($response->status())->toBe(200)
         ->and($response->json())
         ->toHaveKeys(['user', 'expires_at', 'access_token'])
-        ->and($response->json()['user'])
+        ->and($response->json('user'))
         ->toHaveKeys(['id', 'username', 'email', 'full_name', 'mobile', 'created_at', 'updated_at', 'deleted_at']);
 
     $this->assertDatabaseHas('users', [
