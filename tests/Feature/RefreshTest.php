@@ -11,7 +11,7 @@ beforeEach(function () {
 });
 
 it('successfully refreshes the token', function () {
-    $response = $this->postJson(route($this->routeName , ['refresh_token' => $this->token]));
+    $response = $this->postJson(route($this->routeName, ['refresh_token' => $this->token]));
 
     expect($response->status())->toBe(200)
         ->and($response->json())->toHaveKeys(['access_token', 'expires_at', 'user'])
