@@ -13,7 +13,7 @@ use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 class RefreshController extends Controller
 {
     /**
-     * api.admin.auth.refresh
+     * api.auth.refresh
      */
     public function __invoke(Request $request): AuthResource|JsonResponse
     {

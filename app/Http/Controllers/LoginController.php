@@ -9,7 +9,7 @@ use App\Http\Resources\AuthResource;
 class LoginController extends Controller
 {
     /**
-     * api.admin.auth.login
+     * api.auth.login
      */
     public function __invoke(LoginRequest $request): AuthResource
     {
