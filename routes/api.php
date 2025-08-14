@@ -4,6 +4,7 @@ use App\Http\Controllers\User\DeleteUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RefreshController;
+use App\Http\Controllers\User\PatchUserController;
 use App\Http\Controllers\User\StoreUserController;
 
 Route::post('/register', StoreUserController::class)->name('auth.register');
@@ -17,5 +18,6 @@ Route::middleware(['token'])
             ->name('users.')
             ->group(function () {
                 Route::delete('/{user}', DeleteUserController::class)->name('delete')->middleware('can:delete,user');
+                Route::patch('/{user}', PatchUserController::class)->name('patch')->middleware('can:update,user');
             });
     });

@@ -10,4 +10,9 @@ class UserPolicy
     {
         return $authUser->id === $targetUser->id;
     }
+
+    public function update(User $authUser, User $targetUser): bool
+    {
+        return $authUser->id === $targetUser->id;
+    }
 }
