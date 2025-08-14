@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Auth;
 
 use App\Exceptions\Auth\FailedAuthException;
 use App\Http\Requests\Auth\LoginRequest;
