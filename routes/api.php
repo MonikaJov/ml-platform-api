@@ -16,6 +16,6 @@ Route::middleware(['token'])
         Route::prefix('/users')
             ->name('users.')
             ->group(function () {
-                Route::delete('/{user}', DeleteUserController::class)->name('delete');
+                Route::delete('/{user}', DeleteUserController::class)->name('delete')->middleware('can:delete,user');
             });
     });

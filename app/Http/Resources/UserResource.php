@@ -18,7 +18,6 @@ class UserResource extends BaseJsonResource
             'mobile' => $this->mobile,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
         ];
     }
 }

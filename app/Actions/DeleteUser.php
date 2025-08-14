@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Http\Resources\SuccessfulOperationMessageResource;
 use App\Models\User;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Symfony\Component\HttpFoundation\Response;
 
 class DeleteUser
 {
@@ -14,6 +15,9 @@ class DeleteUser
     {
         $user->delete();
 
-        return SuccessfulOperationMessageResource::make('User successfully deleted');
+        return SuccessfulOperationMessageResource::make([
+            'message' => 'User successfully deleted',
+            'code' => Response::HTTP_OK,
+        ]);
     }
 }

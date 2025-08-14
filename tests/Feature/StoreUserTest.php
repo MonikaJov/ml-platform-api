@@ -24,7 +24,7 @@ it('registers new users', function (array $userData) {
         ->and($response->json())
         ->toHaveKeys(['user', 'expires_at', 'access_token'])
         ->and($response->json('user'))
-        ->toHaveKeys(['id', 'username', 'email', 'full_name', 'mobile', 'created_at', 'updated_at', 'deleted_at']);
+        ->toHaveKeys(['id', 'username', 'email', 'full_name', 'mobile', 'created_at', 'updated_at']);
 
     $this->assertDatabaseHas('users', [
         'username' => $userData['username'],
