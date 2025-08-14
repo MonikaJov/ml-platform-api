@@ -2,7 +2,7 @@
 
 namespace App\Actions;
 
-use App\Http\Resources\AuthResource;
+use App\Http\Resources\Auth\AuthResource;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Tymon\JWTAuth\Facades\JWTAuth;
 

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\User;
 
+use App\Http\Resources\BaseJsonResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 

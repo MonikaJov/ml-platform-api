@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Refresh;
-use App\Http\Resources\AuthResource;
+use App\Http\Resources\Auth\AuthResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;

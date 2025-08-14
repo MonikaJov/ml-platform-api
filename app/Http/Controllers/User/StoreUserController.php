@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\StoreUser;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Resources\AuthResource;
+use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Resources\Auth\AuthResource;
 
 class StoreUserController extends Controller
 {

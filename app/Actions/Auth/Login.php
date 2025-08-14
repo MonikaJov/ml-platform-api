@@ -3,8 +3,8 @@
 namespace App\Actions;
 
 use App\Exceptions\Auth\FailedAuthException;
-use App\Http\Requests\LoginRequest;
-use App\Http\Resources\AuthResource;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\Auth\AuthResource;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class Login

@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Dataset;
 
+use App\Http\Resources\BaseJsonResource;
+use App\Http\Resources\User\UserResource;
 use App\Models\Dataset;
 use Illuminate\Http\Request;
 

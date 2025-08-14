@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\BestModel;
 
+use App\Http\Resources\BaseJsonResource;
+use App\Http\Resources\ProblemDetail\ProblemDetailResource;
 use App\Models\BestModel;
 use Illuminate\Http\Request;
 
