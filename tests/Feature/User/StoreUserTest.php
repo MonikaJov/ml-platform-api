@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+
 beforeEach(function () {
     $this->routeName = 'api.auth.register';
 });
@@ -67,3 +69,17 @@ it('can\'t create a user without required parameters', function () {
 
     $this->assertDatabaseCount('users', 0);
 });
+
+it('can\'t create a user if username and email are not unique', function (array $userData) {
+    User::factory()->create([
+        'username' => $userData['username'],
+        'email' => $userData['email'],
+    ]);
+
+    $response = $this->postJson(route($this->routeName), $userData);
+
+    expect($response->status())->toBe(422)
+        ->and($response->json())->toHaveKeys(['message', 'errors'])
+        ->and($response->json('errors')['username'])->toContain('The username has already been taken.')
+        ->and($response->json('errors')['email'])->toContain('The email has already been taken.');
+})->with('store user data');
