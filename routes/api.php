@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\User\DeleteUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RefreshController;
+use App\Http\Controllers\User\DeleteUserController;
 use App\Http\Controllers\User\PatchUserController;
 use App\Http\Controllers\User\StoreUserController;
 

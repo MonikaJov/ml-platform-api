@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Actions\Auth\Refresh;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\Auth\AuthResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
-use App\Http\Controllers\Controller;
 
 class RefreshController extends Controller
 {

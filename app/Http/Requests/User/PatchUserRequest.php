@@ -27,11 +27,11 @@ class PatchUserRequest extends FormRequest
         $userId = $this->route()->parameter('user')->id ?? null;
 
         return [
-            'username' => ['nullable', 'string', 'unique:users,username,'.$userId, 'required_without_all:'.$requiredWithoutAllHelper->handle('username'),],
-            'email' => ['nullable', 'string', 'email', 'unique:users,email,'.$userId, 'required_without_all:'.$requiredWithoutAllHelper->handle('email'),],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed', 'required_without_all:'.$requiredWithoutAllHelper->handle('password'),],
-            'full_name' => ['nullable', 'string', 'required_without_all:'.$requiredWithoutAllHelper->handle('full_name'),],
-            'mobile' => ['nullable', 'string', 'required_without_all:'.$requiredWithoutAllHelper->handle('mobile'),],
+            'username' => ['nullable', 'string', 'unique:users,username,'.$userId, 'required_without_all:'.$requiredWithoutAllHelper->handle('username')],
+            'email' => ['nullable', 'string', 'email', 'unique:users,email,'.$userId, 'required_without_all:'.$requiredWithoutAllHelper->handle('email')],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed', 'required_without_all:'.$requiredWithoutAllHelper->handle('password')],
+            'full_name' => ['nullable', 'string', 'required_without_all:'.$requiredWithoutAllHelper->handle('full_name')],
+            'mobile' => ['nullable', 'string', 'required_without_all:'.$requiredWithoutAllHelper->handle('mobile')],
         ];
     }
 }

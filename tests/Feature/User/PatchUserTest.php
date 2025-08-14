@@ -18,11 +18,11 @@ beforeEach(function () {
     ]);
     $this->actingAs($this->user);
     $this->token = JWTAuth::fromUser($this->user);
-    $this->withHeader('Authorization', 'Bearer ' . $this->token);
+    $this->withHeader('Authorization', 'Bearer '.$this->token);
 });
 
 dataset('patch user data', [
-    fn() => [
+    fn () => [
         'username' => 'updatedusername',
         'email' => 'updateduser@example.io',
         'password' => 'updatedpassword',
