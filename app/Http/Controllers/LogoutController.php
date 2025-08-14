@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class LogoutController extends Controller
 {
     /**
-     * api.admin.auth.logout
+     * api.auth.logout
      */
     public function __invoke(): SuccessfulOperationMessageResource
     {
