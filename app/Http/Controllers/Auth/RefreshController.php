@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use App\Actions\Refresh;
-use App\Http\Resources\AuthResource;
+use App\Actions\Auth\Refresh;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Auth\AuthResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;

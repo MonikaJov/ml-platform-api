@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Auth;
 
+use App\Http\Resources\BaseJsonResource;
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

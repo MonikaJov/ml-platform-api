@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
-use App\Actions\StoreUser;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Resources\AuthResource;
+use App\Actions\User\StoreUser;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Resources\Auth\AuthResource;
 
 class StoreUserController extends Controller
 {

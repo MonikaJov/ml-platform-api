@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
-use App\Actions\DeleteUser;
+use App\Actions\User\DeleteUser;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\SuccessfulOperationMessageResource;
 use App\Models\User;
 

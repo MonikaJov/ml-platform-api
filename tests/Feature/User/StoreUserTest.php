@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+
 beforeEach(function () {
     $this->routeName = 'api.auth.register';
 });
@@ -31,7 +33,7 @@ it('registers new users', function (array $userData) {
     ]);
 })->with('store user data');
 
-it('can\'t create a user with invalid data', function () {
+it('cannot create a user with invalid data', function () {
     $response = $this->postJson(route($this->routeName), [
         'username' => 123,
         'email' => 123,
@@ -54,3 +56,30 @@ it('can\'t create a user with invalid data', function () {
 
     $this->assertDatabaseCount('users', 0);
 });
+
+it('cannot create a user without required parameters', function () {
+    $response = $this->postJson(route($this->routeName), []);
+
+    expect($response->status())->toBe(422)
+        ->and($response->json())->toHaveKeys(['message', 'errors'])
+        ->and($response->json('errors')['username'])->toContain('The username field is required.')
+        ->and($response->json('errors')['email'])->toContain('The email field is required.')
+        ->and($response->json('errors')['password'])->toContain('The password field is required.')
+        ->and($response->json('errors')['full_name'])->toContain('The full name field is required.');
+
+    $this->assertDatabaseCount('users', 0);
+});
+
+it('cannot create a user if username and email are not unique', function (array $userData) {
+    User::factory()->create([
+        'username' => $userData['username'],
+        'email' => $userData['email'],
+    ]);
+
+    $response = $this->postJson(route($this->routeName), $userData);
+
+    expect($response->status())->toBe(422)
+        ->and($response->json())->toHaveKeys(['message', 'errors'])
+        ->and($response->json('errors')['username'])->toContain('The username has already been taken.')
+        ->and($response->json('errors')['email'])->toContain('The email has already been taken.');
+})->with('store user data');

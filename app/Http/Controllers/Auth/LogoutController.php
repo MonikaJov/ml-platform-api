@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use App\Actions\Logout;
+use App\Actions\Auth\Logout;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\SuccessfulOperationMessageResource;
 use Symfony\Component\HttpFoundation\Response;
 

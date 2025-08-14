@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Auth;
 
-use App\Http\Resources\AuthResource;
+use App\Http\Resources\Auth\AuthResource;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
