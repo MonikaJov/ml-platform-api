@@ -24,7 +24,7 @@ class StoreDataset
         $dataset = Dataset::create([
             'path' => $path,
             'user_id' => $client->id,
-            'has_null' => $validated['has_null'],
+            'has_null' => $validated['has_null'] ?? false,
         ]);
 
         return DatasetResource::make($dataset);

@@ -15,7 +15,7 @@ class StoreDatasetRequest extends FormRequest
     {
         return [
             'dataset' => ['required', 'file', 'mimes:csv'],
-            'has_null' => ['required', 'boolean', 'default' => false],
+            'has_null' => ['sometimes', 'boolean'],
         ];
     }
 }

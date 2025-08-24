@@ -30,6 +30,25 @@ it('stores a valid dataset', function (array $datasetData) {
 
     $this->assertDatabaseHas('datasets', [
         'user_id' => $this->user->id,
+        'has_null' => true,
+    ]);
+
+    Storage::disk('datasets')->assertExists($response->json('data.path'));
+})->with('valid dataset files');
+
+it('stores a dataset without has_null parameter', function (array $datasetData) {
+    $this->assertDatabaseCount('datasets', 0);
+
+    $response = $this->postJson(route($this->routeName), [
+        'dataset' => $datasetData['dataset'],
+    ]);
+
+    expect($response->status())->toBe(200)
+        ->and($response->json())->toHaveKeys(['id', 'has_null', 'created_at', 'updated_at']);
+
+    $this->assertDatabaseHas('datasets', [
+        'user_id' => $this->user->id,
+        'has_null' => false,
     ]);
 
     Storage::disk('datasets')->assertExists($response->json('data.path'));
