@@ -65,7 +65,7 @@ it('updates users', function (array $userData) {
     ]);
 })->with('patch user data');
 
-it('cannot update a user with invalid data', function () {
+it('cannot patch with invalid data', function () {
     $response = $this->patchJson(route($this->routeName, [
         'user' => $this->user->id,
     ]), [
@@ -89,7 +89,7 @@ it('cannot update a user with invalid data', function () {
         ->and($response->json('errors')['mobile'])->toContain('The mobile field must be a string.');
 });
 
-it('cannot patch a user without all parameters', function () {
+it('cannot patch without all parameters', function () {
     $response = $this->patchJson(route($this->routeName, [
         'user' => $this->user->id,
     ]));
@@ -103,7 +103,7 @@ it('cannot patch a user without all parameters', function () {
         ->and($response->json('errors')['full_name'])->toContain('The full name field is required when none of username / email / password / mobile are present.');
 });
 
-it('cannot patch a user if username and email are not unique', function (array $userData) {
+it('cannot patch if username and email are not unique', function (array $userData) {
     User::factory()->create([
         'username' => $userData['username'],
         'email' => $userData['email'],
@@ -129,7 +129,7 @@ it('cannot patch user that does not exist', function () {
         ->and($response->json('error'))->toBe('Not found');
 });
 
-it('cannot patch user id user is not authenticated', function () {
+it('cannot patch if user is not authenticated', function () {
     auth()->logout();
 
     $response = $this->patchJson(route($this->routeName, [
