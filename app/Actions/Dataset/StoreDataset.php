@@ -5,6 +5,10 @@ namespace App\Actions\Dataset;
 use App\Http\Requests\Dataset\StoreDatasetRequest;
 use App\Http\Resources\Dataset\DatasetResource;
 use App\Models\Dataset;
+use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class StoreDataset
@@ -13,20 +17,20 @@ class StoreDataset
 
     public function handle(StoreDatasetRequest $request): DatasetResource
     {
-        $validated = $request->validated();
-        $file = $validated['dataset'];
-        $client = auth()->user();
-
-        $filename = $client->username.'_'.time().'.'.$file->getClientOriginalExtension();
-
-        $path = $file->storeAs("{$client->id}", $filename, 'datasets');
+        $path = self::storeFile($request->validated()['dataset'], auth()->user());
 
         $dataset = Dataset::create([
             'path' => $path,
-            'user_id' => $client->id,
-            'has_null' => $validated['has_null'] ?? false,
+            ...Arr::except($request->validated(), 'dataset'),
         ]);
 
         return DatasetResource::make($dataset);
+    }
+
+    private function storeFile(UploadedFile $file, User $client): string
+    {
+        $filename = $client->username.'_'.time().Str::uuid()->toString().'.'.$file->getClientOriginalExtension();
+
+        return $file->storeAs("{$client->id}", $filename, 'datasets');
     }
 }
