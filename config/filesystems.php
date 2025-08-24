@@ -60,6 +60,12 @@ return [
             'report' => false,
         ],
 
+        'datasets' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/datasets'),
+            'visibility' => 'private',
+        ],
+
     ],
 
     /*

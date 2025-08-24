@@ -40,7 +40,7 @@ it('cannot delete user that does not exist', function () {
         ->and($response->json('error'))->toBe('Not found');
 });
 
-it('cannot delete user id user is not authenticated', function () {
+it('cannot delete if user is not authenticated', function () {
     auth()->logout();
 
     $response = $this->deleteJson(route($this->routeName, [
