@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -54,13 +55,14 @@ it('stores a dataset without has_null parameter', function (array $datasetData) 
     Storage::disk('datasets')->assertExists($response->json('data.path'));
 })->with('valid dataset files');
 
-it('cannot store an invalid file type', function () {
+it('cannot store with invalid data', function () {
     $response = $this->postJson(route($this->routeName), [
         'dataset' => UploadedFile::fake()->create('data.txt', 100, 'text/plain'),
-        'has_null' => false,
+        'has_null' => 'invalid',
     ]);
 
     expect($response->status())->toBe(422)
+        ->and($response->json('errors')['has_null'])->toContain('The has null field must be true or false.')
         ->and($response->json('errors')['dataset'])->toContain('The dataset field must be a file of type: csv.');
 
     $this->assertDatabaseCount('datasets', 0);
@@ -74,3 +76,14 @@ it('cannot store without required parameters', function () {
 
     $this->assertDatabaseCount('datasets', 0);
 });
+
+it('cannot store if user is not authenticated', function () {
+    auth()->logout();
+
+    $response = $this->postJson(route($this->routeName));
+
+    expect($response->status())->toBe(401)
+        ->and($response->json())->toMatchArray([
+            'message' => 'Token could not be parsed from the request.',
+        ]);
+})->throws(JWTException::class);
