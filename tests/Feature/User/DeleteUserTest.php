@@ -53,7 +53,7 @@ it('cannot delete if user is not authenticated', function () {
         ]);
 })->throws(JWTException::class);
 
-it('cannot delete user that is not you', function () {
+it('cannot delete user that is not authenticated user', function () {
     $differentUser = User::factory()->create();
 
     $response = $this->deleteJson(route($this->routeName, [

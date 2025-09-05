@@ -14,7 +14,7 @@ beforeEach(function () {
     Storage::fake('datasets');
 });
 
-dataset('valid dataset files', [
+dataset('dataset data', [
     fn () => [
         'dataset' => UploadedFile::fake()->create('data.csv', 100, 'text/csv'),
         'has_null' => true,
@@ -35,7 +35,7 @@ it('stores a valid dataset', function (array $datasetData) {
     ]);
 
     Storage::disk('datasets')->assertExists($response->json('data.path'));
-})->with('valid dataset files');
+})->with('dataset data');
 
 it('stores a dataset without has_null parameter', function (array $datasetData) {
     $this->assertDatabaseCount('datasets', 0);
@@ -53,7 +53,7 @@ it('stores a dataset without has_null parameter', function (array $datasetData) 
     ]);
 
     Storage::disk('datasets')->assertExists($response->json('data.path'));
-})->with('valid dataset files');
+})->with('dataset data');
 
 it('cannot store with invalid data', function () {
     $response = $this->postJson(route($this->routeName), [
