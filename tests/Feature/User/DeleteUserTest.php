@@ -4,18 +4,15 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 beforeEach(function () {
     $this->routeName = 'api.users.delete';
 
     $this->user = User::factory()->create();
     $this->actingAs($this->user);
-    $this->token = JWTAuth::fromUser($this->user);
-    $this->withHeader('Authorization', 'Bearer '.$this->token);
 });
 
-it('deletes user', function () {
+it('deletes a user', function () {
     $response = $this->deleteJson(route($this->routeName, [
         'user' => $this->user->id,
     ]));
@@ -30,7 +27,7 @@ it('deletes user', function () {
     ]);
 });
 
-it('cannot delete user that does not exist', function () {
+it('cannot delete item that does not exist', function () {
     $response = $this->deleteJson(route($this->routeName, [
         'user' => 9999,
     ]));

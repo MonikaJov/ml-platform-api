@@ -13,7 +13,7 @@ beforeEach(function () {
     ]);
 });
 
-it('successfully logs in with valid credentials', function () {
+it('logs in with valid credentials', function () {
     $response = $this->postJson(route($this->routeName), [
         'username' => 'testuser',
         'password' => 'password',
@@ -28,7 +28,7 @@ it('successfully logs in with valid credentials', function () {
 
 });
 
-it('can\'t log in with invalid credentials', function () {
+it('cannot log in with invalid credentials', function () {
     $response = $this->postJson(route($this->routeName), [
         'username' => 'testuser',
         'password' => 'wrongpassword',

@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 beforeEach(function () {
     $this->routeName = 'api.users.patch';
@@ -17,11 +17,9 @@ beforeEach(function () {
         'mobile' => '+555 555 5555',
     ]);
     $this->actingAs($this->user);
-    $this->token = JWTAuth::fromUser($this->user);
-    $this->withHeader('Authorization', 'Bearer '.$this->token);
 });
 
-dataset('patch user data', [
+dataset('user data', [
     fn () => [
         'username' => 'updatedusername',
         'email' => 'updateduser@example.io',
@@ -32,7 +30,7 @@ dataset('patch user data', [
     ],
 ]);
 
-it('updates users', function (array $userData) {
+it('updates a user', function (array $userData) {
     $this->assertDatabaseHas('users', [
         'username' => $this->user->username,
         'email' => $this->user->email,
@@ -52,7 +50,6 @@ it('updates users', function (array $userData) {
     $this->assertDatabaseMissing('users', [
         'username' => $this->user->username,
         'email' => $this->user->email,
-        'password' => $this->user->password,
         'full_name' => $this->user->full_name,
         'mobile' => $this->user->mobile,
     ]);
@@ -63,7 +60,10 @@ it('updates users', function (array $userData) {
         'full_name' => $userData['full_name'],
         'mobile' => $userData['mobile'],
     ]);
-})->with('patch user data');
+
+    $user = User::query()->where('username', $userData['username'])->first();
+    expect(Hash::check('updatedpassword', $user->password))->toBeTrue();
+})->with('user data');
 
 it('cannot patch with invalid data', function () {
     $response = $this->patchJson(route($this->routeName, [
@@ -117,9 +117,9 @@ it('cannot patch if username and email are not unique', function (array $userDat
         ->and($response->json())->toHaveKeys(['message', 'errors'])
         ->and($response->json('errors')['username'])->toContain('The username has already been taken.')
         ->and($response->json('errors')['email'])->toContain('The email has already been taken.');
-})->with('patch user data');
+})->with('user data');
 
-it('cannot patch user that does not exist', function () {
+it('cannot patch item that does not exist', function () {
     $response = $this->patchJson(route($this->routeName, [
         'user' => 9999,
     ]));
@@ -142,7 +142,7 @@ it('cannot patch if user is not authenticated', function () {
         ]);
 })->throws(JWTException::class);
 
-it('cannot patch user that is not you', function () {
+it('cannot patch user that is not authenticated user', function () {
     $differentUser = User::factory()->create();
 
     $response = $this->patchJson(route($this->routeName, [
