@@ -22,7 +22,7 @@ beforeEach(function () {
 
 dataset('dataset', [
     function () {
-        $file = UploadedFile::fake()->create('data.csv', 100, 'csv');
+        $file = UploadedFile::fake()->createWithContent('data.csv', 'id,name,email'.PHP_EOL.'1,Ana,ana@example.com'.PHP_EOL);
 
         $file->storeAs("{$this->user->id}", 'data.csv', 'datasets');
 
