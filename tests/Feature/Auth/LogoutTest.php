@@ -10,11 +10,11 @@ beforeEach(function () {
 
     $this->user = User::factory()->create();
     $this->actingAs($this->user);
+
     $this->token = JWTAuth::fromUser($this->user);
-    $this->withHeader('Authorization', 'Bearer '.$this->token);
 });
 
-it('successfully logs out', function () {
+it('logs out', function () {
     JWTAuth::shouldReceive('parseToken')
         ->once()
         ->andReturn($this->token);

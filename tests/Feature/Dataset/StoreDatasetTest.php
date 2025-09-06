@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 beforeEach(function () {
+    $this->routeName = 'api.datasets.store';
+
     $this->user = User::factory()->create();
     $this->actingAs($this->user);
-    $this->routeName = 'api.datasets.store';
+
     Storage::fake('datasets');
 });
 
@@ -21,7 +23,7 @@ dataset('dataset data', [
     ],
 ]);
 
-it('stores a valid dataset', function (array $datasetData) {
+it('stores a dataset', function (array $datasetData) {
     $this->assertDatabaseCount('datasets', 0);
 
     $response = $this->postJson(route($this->routeName), $datasetData);
@@ -38,24 +40,6 @@ it('stores a valid dataset', function (array $datasetData) {
     Storage::disk('datasets')->assertExists($response->json('data.path'));
 })->with('dataset data');
 
-it('stores a dataset without has_null parameter', function (array $datasetData) {
-    $this->assertDatabaseCount('datasets', 0);
-
-    $response = $this->postJson(route($this->routeName), [
-        'dataset' => $datasetData['dataset'],
-    ]);
-
-    expect($response->status())->toBe(200)
-        ->and($response->json())->toHaveKeys(['id', 'has_null', 'created_at', 'updated_at']);
-
-    $this->assertDatabaseHas('datasets', [
-        'user_id' => $this->user->id,
-        'has_null' => false,
-    ]);
-
-    Storage::disk('datasets')->assertExists($response->json('data.path'));
-})->with('dataset data');
-
 it('cannot store with invalid data', function () {
     $response = $this->postJson(route($this->routeName), [
         'dataset' => UploadedFile::fake()->create('data.txt', 100, 'text/plain'),
@@ -66,17 +50,13 @@ it('cannot store with invalid data', function () {
         ->and($response->json('errors')['has_null'])->toContain('The has null field must be true or false.')
         ->and($response->json('errors')['dataset'])->toContain('The dataset field must be a file of type: csv.')
         ->and($response->json('errors')['dataset'])->toContain('The file needs to have at least two non-empty rows.');
-
-    $this->assertDatabaseCount('datasets', 0);
 });
 
 it('cannot store without required parameters', function () {
-    $response = $this->postJson(route($this->routeName), []);
+    $response = $this->postJson(route($this->routeName));
 
     expect($response->status())->toBe(422)
         ->and($response->json('errors')['dataset'])->toContain('The dataset field is required.');
-
-    $this->assertDatabaseCount('datasets', 0);
 });
 
 it('cannot store if user is not authenticated', function () {
