@@ -11,6 +11,8 @@ use Illuminate\Support\Collection;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
+ * Observed by UserObserver::class
+ *
  * @property int $id
  * @property string $username
  * @property string $email
