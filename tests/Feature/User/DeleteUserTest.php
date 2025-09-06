@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\Dataset;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 beforeEach(function () {
@@ -12,7 +15,26 @@ beforeEach(function () {
     $this->actingAs($this->user);
 });
 
-it('deletes a user', function () {
+it('deletes a user along with their datasets', function () {
+    Storage::fake('datasets');
+
+    $file = UploadedFile::fake()->createWithContent('data.csv', 'id,name,email'.PHP_EOL.'1,Ana,ana@example.com'.PHP_EOL);
+    $file->storeAs("{$this->user->id}", 'data.csv', 'datasets');
+
+    $dataset = Dataset::factory()->create([
+        'path' => $this->user->id.'/'.$file->name,
+        'user_id' => $this->user->id,
+    ]);
+
+    Storage::disk('datasets')->assertExists($dataset->path);
+
+    $this->assertDatabaseHas('users', [
+        'username' => $this->user->username,
+    ]);
+    $this->assertDatabaseHas('datasets', [
+        'user_id' => $this->user->id,
+    ]);
+
     $response = $this->deleteJson(route($this->routeName, [
         'user' => $this->user->id,
     ]));
@@ -25,6 +47,12 @@ it('deletes a user', function () {
     $this->assertDatabaseMissing('users', [
         'username' => $this->user->username,
     ]);
+
+    $this->assertDatabaseMissing('datasets', [
+        'user_id' => $this->user->id,
+    ]);
+
+    Storage::disk('datasets')->assertMissing($dataset->path);
 });
 
 it('cannot delete item that does not exist', function () {

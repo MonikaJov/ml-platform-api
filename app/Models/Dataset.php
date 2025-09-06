@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
+ * Observed by DatasetObserver::class
+ *
  * @property int $id
  * @property string $path
  * @property int $user_id
