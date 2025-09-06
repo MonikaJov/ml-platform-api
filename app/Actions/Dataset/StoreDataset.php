@@ -17,10 +17,9 @@ class StoreDataset
 
     public function handle(StoreDatasetRequest $request): DatasetResource
     {
-        $path = self::storeFile($request->validated()['dataset'], auth()->user());
-
         $dataset = Dataset::create([
-            'path' => $path,
+            'path' => self::storeFile($request->validated()['dataset'], auth()->user()),
+            'column_names' => self::getHeaders($request->validated()['dataset']),
             ...Arr::except($request->validated(), 'dataset'),
         ]);
 
@@ -32,5 +31,17 @@ class StoreDataset
         $filename = $client->username.'_'.time().Str::uuid()->toString().'.'.$file->getClientOriginalExtension();
 
         return $file->storeAs("{$client->id}", $filename, 'datasets');
+    }
+
+    private function getHeaders(UploadedFile $file): string
+    {
+        $headers = [];
+
+        if (($handle = fopen($file->getRealPath(), 'r')) !== false) {
+            $headers = fgetcsv($handle) ?: [];
+            fclose($handle);
+        }
+
+        return implode(',', $headers);
     }
 }
