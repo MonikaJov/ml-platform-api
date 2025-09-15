@@ -62,8 +62,6 @@ it('stores classification problem detail', function (array $problemDetailsData) 
         'dataset' => $this->dataset->id,
     ]), $problemDetailsData);
 
-    //    dd($response->json());
-
     expect($response->status())->toBe(200)
         ->and($response->json())->toHaveKeys(['id', 'type', 'target_column', 'dataset', 'created_at', 'updated_at']);
 
