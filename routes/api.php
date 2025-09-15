@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RefreshController;
 use App\Http\Controllers\Dataset\DeleteDatasetController;
 use App\Http\Controllers\Dataset\StoreDatasetController;
+use App\Http\Controllers\ProblemDetail\StoreProblemDetailController;
 use App\Http\Controllers\User\DeleteUserController;
 use App\Http\Controllers\User\PatchUserController;
 use App\Http\Controllers\User\StoreUserController;
@@ -27,5 +28,10 @@ Route::middleware(['token'])
             ->group(function () {
                 Route::post('/', StoreDatasetController::class)->name('store');
                 Route::delete('/{dataset}', DeleteDatasetController::class)->name('delete')->middleware('can:delete,dataset');
+            });
+        Route::prefix('datasets/{dataset}/problem-details')
+            ->name('dataset.problem-details.')
+            ->group(function () {
+                Route::post('/', StoreProblemDetailController::class)->name('store')->middleware(['can:create,App\Models\ProblemDetail,dataset', 'unique_per_model']);
             });
     });
