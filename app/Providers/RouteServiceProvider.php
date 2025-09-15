@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\UniquePerModelMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,5 +17,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::middleware('web')
             ->group(base_path('routes/web.php'));
+
+        $this->app['router']->aliasMiddleware('unique_per_model', UniquePerModelMiddleware::class);
     }
 }
