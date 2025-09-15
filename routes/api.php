@@ -27,11 +27,14 @@ Route::middleware(['token'])
             ->name('datasets.')
             ->group(function () {
                 Route::post('/', StoreDatasetController::class)->name('store');
+                //NOTE: remember to add observations when deleting dataset (also delete problem details)
                 Route::delete('/{dataset}', DeleteDatasetController::class)->name('delete')->middleware('can:delete,dataset');
             });
         Route::prefix('datasets/{dataset}/problem-details')
             ->name('dataset.problem-details.')
             ->group(function () {
+                //TODO: Add update and delete routes
+                //NOTE: remember to add observations when deleting problem detail
                 Route::post('/', StoreProblemDetailController::class)->name('store')->middleware(['can:create,App\Models\ProblemDetail,dataset', 'unique_per_model']);
             });
     });
