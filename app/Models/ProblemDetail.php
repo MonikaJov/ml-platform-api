@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
  * @property ProblemDetailTypeEnum $type
  * @property string $target_column
  * @property int $dataset_id
+ * @property string $task_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */

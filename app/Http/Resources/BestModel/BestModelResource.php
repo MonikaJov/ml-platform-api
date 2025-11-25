@@ -17,6 +17,7 @@ class BestModelResource extends BaseJsonResource
             'path' => $this->path,
             'problem_detail' => ProblemDetailResource::make($this->whenLoaded('problemDetail')),
             'name' => $this->name,
+            'performance' => $this->performance,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
