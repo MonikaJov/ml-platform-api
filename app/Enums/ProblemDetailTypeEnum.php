@@ -10,5 +10,6 @@ enum ProblemDetailTypeEnum: string
 
     case REGRESSION = 'regression';
     case CLASSIFICATION = 'classification';
+    case BINARY_CLASSIFICATION = 'binary_classification';
     case CLUSTERING = 'clustering';
 }
