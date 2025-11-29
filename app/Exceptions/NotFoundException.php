@@ -6,9 +6,9 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class NotFoundException extends Exception
+class NotFoundException extends BaseException
 {
-    private const DEFAULT_HTTP_CODE = Response::HTTP_NOT_FOUND;
+    private const int DEFAULT_HTTP_CODE = Response::HTTP_NOT_FOUND;
 
     /**
      * Render the exception into an HTTP JSON response.

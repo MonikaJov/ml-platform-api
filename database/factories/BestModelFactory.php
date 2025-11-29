@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\BestModel;
+use App\Models\Dataset;
 use App\Models\ProblemDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
@@ -19,6 +20,8 @@ class BestModelFactory extends Factory
             'path' => 'models/'.$filename.'.pkl',
             'name' => $this->faker->word.'Model',
             'problem_detail_id' => ProblemDetail::factory(),
+            'dataset_id' => Dataset::factory(),
+            'performance' => '{"accuracy": '.$this->faker->randomFloat(4, 0.7, 1.0).', "f1_score": '.$this->faker->randomFloat(4, 0.7, 1.0).'}',
             'created_at' => Carbon::now(),
         ];
     }

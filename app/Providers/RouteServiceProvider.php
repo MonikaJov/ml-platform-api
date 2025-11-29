@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\FileMustExistMiddleware;
+use App\Http\Middleware\RecordsMustBeRelatedMiddleware;
 use App\Http\Middleware\UniquePerModelMiddleware;
+use App\Http\Middleware\VerifyInternalServiceTokenMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,5 +22,8 @@ class RouteServiceProvider extends ServiceProvider
             ->group(base_path('routes/web.php'));
 
         $this->app['router']->aliasMiddleware('unique_per_model', UniquePerModelMiddleware::class);
+        $this->app['router']->aliasMiddleware('file_must_exist', FileMustExistMiddleware::class);
+        $this->app['router']->aliasMiddleware('records_must_be_related', RecordsMustBeRelatedMiddleware::class);
+        $this->app['router']->aliasMiddleware('ml_engine_token', VerifyInternalServiceTokenMiddleware::class);
     }
 }

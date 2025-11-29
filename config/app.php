@@ -123,4 +123,21 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Machine Learning Engine
+    |--------------------------------------------------------------------------
+    */
+    'ml_api_url' => env('ML_API_URL'),
+
+    'ml_platform_internal_auth' => [
+        'token' => env('ML_PLATFORM_INTERNAL_AUTH_TOKEN'),
+        'header' => 'X-Internal-Service-Token',
+    ],
+
+    'endpoints' => [
+        'train' => '/api/train',
+        'status' => '/api/status/{job_id}',
+    ],
+
 ];

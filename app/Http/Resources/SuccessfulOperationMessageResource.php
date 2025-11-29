@@ -3,18 +3,20 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
-class SuccessfulOperationMessageResource extends JsonResource
+class SuccessfulOperationMessageResource extends BaseJsonResource
 {
     public string $message;
 
     public int $code;
 
+    public ?array $details;
+
     public function __construct($resource)
     {
         $this->message = $resource['message'];
         $this->code = $resource['code'];
+        $this->details = $resource['details'] ?? null;
 
         parent::__construct($resource);
     }
@@ -24,6 +26,7 @@ class SuccessfulOperationMessageResource extends JsonResource
         return [
             'message' => $this->message,
             'code' => $this->code,
+            'details' => $this->details ?? null,
         ];
     }
 }

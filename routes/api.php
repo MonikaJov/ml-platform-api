@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RefreshController;
+use App\Http\Controllers\BestModel\StartTrainingModelController;
+use App\Http\Controllers\BestModel\StoreBestModelController;
 use App\Http\Controllers\Dataset\DeleteDatasetController;
 use App\Http\Controllers\Dataset\StoreDatasetController;
 use App\Http\Controllers\ProblemDetail\StoreProblemDetailController;
@@ -26,15 +28,30 @@ Route::middleware(['token'])
         Route::prefix('/datasets')
             ->name('datasets.')
             ->group(function () {
+                // TODO: Add get datastes route
                 Route::post('/', StoreDatasetController::class)->name('store');
-                //NOTE: remember to add observations when deleting dataset (also delete problem details)
+                // NOTE: remember to add observations when deleting dataset (also delete problem details)
                 Route::delete('/{dataset}', DeleteDatasetController::class)->name('delete')->middleware('can:delete,dataset');
             });
         Route::prefix('datasets/{dataset}/problem-details')
             ->name('dataset.problem-details.')
             ->group(function () {
-                //TODO: Add update and delete routes
-                //NOTE: remember to add observations when deleting problem detail
+                // TODO: Add update and delete routes
+                // NOTE: remember to add observations when deleting problem detail
                 Route::post('/', StoreProblemDetailController::class)->name('store')->middleware(['can:create,App\Models\ProblemDetail,dataset', 'unique_per_model']);
+            });
+        Route::prefix('datasets/{dataset}/problem-details/{problem_detail}/best-models')
+            ->name('dataset.problem-detail.best-models.')
+            ->group(function () {
+                Route::post('/train', StartTrainingModelController::class)->name('train')->middleware('records_must_be_related:dataset,problem_detail', 'file_must_exist');
+            });
+    });
+
+Route::middleware(['ml_engine_token'])
+    ->group(function () {
+        Route::prefix('best-models')
+            ->name('best-models.')
+            ->group(function () {
+                Route::post('/', StoreBestModelController::class)->name('store');
             });
     });
