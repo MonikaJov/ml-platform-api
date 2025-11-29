@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MlEngineRequestException extends BaseException
 {
-    private const int DEFAULT_HTTP_CODE = Response::HTTP_INTERNAL_SERVER_ERROR;
+    private const int DEFAULT_HTTP_CODE = Response::HTTP_BAD_GATEWAY;
 
     public function render(): JsonResponse
     {
