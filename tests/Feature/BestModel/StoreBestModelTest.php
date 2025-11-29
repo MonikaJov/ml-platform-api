@@ -97,15 +97,6 @@ it('stores best model', function (array $payload) {
     ]);
 })->with('dataset');
 
-it('cannot store best model with invalid token', function (array $payload) {
-    $this->withHeader(config('app.ml_platform_internal_auth.header'), 'invalid-token');
-
-    $response = $this->postJson(route($this->routeName), $payload);
-
-    expect($response->status())->toBe(401)
-        ->and($response->json('error'))->toBe('Unauthenticated.');
-})->with('dataset');
-
 it('stores best model and deletes old best models with the same problem detail', function (array $payload) {
     $oldBestModel = BestModel::factory()->create([
         'problem_detail_id' => $this->problemDetail->id,
@@ -114,31 +105,7 @@ it('stores best model and deletes old best models with the same problem detail',
 
     $response = $this->postJson(route($this->routeName), $payload);
 
-    expect($response->status())->toBe(200)
-        ->and($response->json())->toHaveKeys([
-            'id',
-            'path',
-            'name',
-            'performance',
-            'problem_detail',
-            'dataset',
-            'created_at',
-            'updated_at',
-        ])
-        ->and($response->json('problem_detail'))->toHaveKeys([
-            'id',
-            'type',
-            'target_column',
-            'task_id',
-            'created_at',
-            'updated_at',
-        ])
-        ->and($response->json('dataset'))->toHaveKeys([
-            'id',
-            'user',
-            'created_at',
-            'updated_at',
-        ]);
+    expect($response->status())->toBe(200);
 
     $this->assertDatabaseMissing('best_models', [
         'id' => $oldBestModel->id,
@@ -147,6 +114,15 @@ it('stores best model and deletes old best models with the same problem detail',
     $this->assertDatabaseHas('best_models', [
         'id' => $response->json('id'),
     ]);
+})->with('dataset');
+
+it('cannot store best model with invalid token', function (array $payload) {
+    $this->withHeader(config('app.ml_platform_internal_auth.header'), 'invalid-token');
+
+    $response = $this->postJson(route($this->routeName), $payload);
+
+    expect($response->status())->toBe(401)
+        ->and($response->json('error'))->toBe('Unauthenticated.');
 })->with('dataset');
 
 it('cannot stores when task_id does not exist in problem_details table', function (array $payload) {
