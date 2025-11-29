@@ -17,6 +17,7 @@ class ProblemDetailResource extends BaseJsonResource
             'type' => $this->type,
             'target_column' => $this->target_column,
             'dataset' => DatasetResource::make($this->whenLoaded('dataset')),
+            'task_id' => $this->task_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
