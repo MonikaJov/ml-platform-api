@@ -16,15 +16,16 @@ class StoreBestModel
     {
         $problemDetail = ProblemDetail::where('task_id', $request->task_id)->first();
 
-        BestModel::where('problem_detail_id', $problemDetail->id)->delete();
-
-        $bestModel = BestModel::create([
-            'path' => $request->validated()['model_path'],
-            'name' => $request->validated()['model_type'],
-            'performance' => json_encode($request->validated()['performance']),
-            'problem_detail_id' => $problemDetail->id,
-            'dataset_id' => $problemDetail->dataset_id,
-        ]);
+        $bestModel = BestModel::updateOrCreate(
+            [
+                'problem_detail_id' => $problemDetail->id,
+                'dataset_id' => $problemDetail->dataset_id,
+            ],
+            [
+                'path' => $request->validated()['model_path'],
+                'name' => $request->validated()['model_type'],
+                'performance' => json_encode($request->validated()['performance']),
+            ]);
 
         return BestModelResource::make($bestModel->load('problemDetail', 'dataset.user'));
     }

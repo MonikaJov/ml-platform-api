@@ -97,10 +97,13 @@ it('stores best model', function (array $payload) {
     ]);
 })->with('dataset');
 
-it('stores best model and deletes old best models with the same problem detail', function (array $payload) {
-    $oldBestModel = BestModel::factory()->create([
+it('updates best model with the same problem detail', function (array $payload) {
+    BestModel::factory()->create([
         'problem_detail_id' => $this->problemDetail->id,
         'dataset_id' => $this->dataset->id,
+        'path' => 'Old_Model_Path',
+        'name' => 'Old_Model_Type',
+        'performance' => json_encode(['r2' => 0.5]),
     ]);
 
     $response = $this->postJson(route($this->routeName), $payload);
@@ -108,11 +111,19 @@ it('stores best model and deletes old best models with the same problem detail',
     expect($response->status())->toBe(200);
 
     $this->assertDatabaseMissing('best_models', [
-        'id' => $oldBestModel->id,
+        'problem_detail_id' => $this->problemDetail->id,
+        'dataset_id' => $this->dataset->id,
+        'path' => 'Old_Model_Path',
+        'name' => 'Old_Model_Type',
+        'performance' => json_encode(['r2' => 0.5]),
     ]);
 
     $this->assertDatabaseHas('best_models', [
-        'id' => $response->json('id'),
+        'problem_detail_id' => $this->problemDetail->id,
+        'dataset_id' => $this->dataset->id,
+        'path' => $payload['model_path'],
+        'name' => $payload['model_type'],
+        'performance' => json_encode($payload['performance']),
     ]);
 })->with('dataset');
 
