@@ -3,6 +3,7 @@
 namespace App\Http\Resources\ProblemDetail;
 
 use App\Http\Resources\BaseJsonResource;
+use App\Http\Resources\BestModel\BestModelResource;
 use App\Http\Resources\Dataset\DatasetResource;
 use App\Models\ProblemDetail;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ class ProblemDetailResource extends BaseJsonResource
             'type' => $this->type,
             'target_column' => $this->target_column,
             'dataset' => DatasetResource::make($this->whenLoaded('dataset')),
+            'best_model' => BestModelResource::make($this->whenLoaded('bestModel')),
             'task_id' => $this->task_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

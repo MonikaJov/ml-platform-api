@@ -24,7 +24,7 @@ class IndexDataset
             ->allowedSorts(['id', 'created_at', 'updated_at'])
             ->defaultSort('-created_at')
             ->with([
-                'user', 'problemDetail.bestModel',
+                'problemDetail.bestModel',
             ])
             ->where('user_id', auth()->user()->id)
             ->paginate(

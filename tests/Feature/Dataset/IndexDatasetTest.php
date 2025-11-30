@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\BestModel;
 use App\Models\Dataset;
+use App\Models\ProblemDetail;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -21,20 +23,30 @@ dataset('dataset data', [
     function () {
         $file1 = UploadedFile::fake()->createWithContent('data1.csv', 'id,name,email,gender'.PHP_EOL.'1,Ana,ana@example.com,1'.PHP_EOL);
         $file1->storeAs("{$this->user->id}", 'data1.csv', 'datasets');
-
         $this->dataset1 = Dataset::factory()->create([
             'path' => $this->user->id.'/'.$file1->name,
             'column_names' => 'id,name,email,gender',
             'user_id' => $this->user->id,
         ]);
+        $this->bestModel = BestModel::factory()->create([
+            'dataset_id' => $this->dataset1->id,
+            'problem_detail_id' => ProblemDetail::factory()->create([
+                'dataset_id' => $this->dataset1->id,
+            ])->id,
+        ]);
 
         $file2 = UploadedFile::fake()->createWithContent('data2.csv', 'id,name,email,gender'.PHP_EOL.'1,Ana,ana@example.com,1'.PHP_EOL);
         $file2->storeAs("{$this->user->id}", 'data2.csv', 'datasets');
-
         $this->dataset2 = Dataset::factory()->create([
             'path' => $this->user->id.'/'.$file2->name,
             'column_names' => 'id,name,email,gender',
             'user_id' => $this->user->id,
+        ]);
+        $this->bestModel = BestModel::factory()->create([
+            'dataset_id' => $this->dataset2->id,
+            'problem_detail_id' => ProblemDetail::factory()->create([
+                'dataset_id' => $this->dataset2->id,
+            ])->id,
         ]);
 
         $file3 = UploadedFile::fake()->createWithContent('data3.csv', 'id,name,email,gender'.PHP_EOL.'1,Ana,ana@example.com,1'.PHP_EOL);
@@ -56,7 +68,33 @@ it('lists datasets without filters', function () {
 
     expect($response->status())->toBe(200)
         ->and($response->json('total_records'))->toBe(2)
-        ->and($response->json('data')[0])->toHaveKeys(['id', 'user', 'name', 'has_null', 'name', 'column_names', 'created_at', 'updated_at']);
+        ->and($response->json('data')[0])->toHaveKeys([
+            'id',
+            'problem_details',
+            'name',
+            'has_null',
+            'name',
+            'column_names',
+            'created_at',
+            'updated_at',
+        ])
+        ->and($response->json('data')[0]['problem_details'])->toHaveKeys([
+            'id',
+            'type',
+            'target_column',
+            'best_model',
+            'task_id',
+            'created_at',
+            'updated_at',
+        ])
+        ->and($response->json('data')[0]['problem_details']['best_model'])->toHaveKeys([
+            'id',
+            'path',
+            'name',
+            'performance',
+            'created_at',
+            'updated_at',
+        ]);
 })->with('dataset data');
 
 it('lists datasets with id filter', function () {
