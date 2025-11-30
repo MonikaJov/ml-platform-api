@@ -138,6 +138,7 @@ return [
     'endpoints' => [
         'train' => '/api/train',
         'status' => '/api/status/{job_id}',
+        'predict' => '/api/predict',
     ],
 
 ];
