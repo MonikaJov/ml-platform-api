@@ -6,15 +6,15 @@ use App\Exceptions\MlEngine\MlEngineResponseException;
 use App\Http\Resources\SuccessfulOperationMessageResource;
 use App\Models\Dataset;
 use App\Models\ProblemDetail;
+use App\Traits\MlEngineRequestTrait;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
-use Illuminate\Support\Facades\Http;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Symfony\Component\HttpFoundation\Response;
 
 class StartTrainingModel
 {
-    use AsAction;
+    use AsAction, MlEngineRequestTrait;
 
     /**
      * @throws RequestException
@@ -24,18 +24,6 @@ class StartTrainingModel
     public function handle(Dataset $dataset, ProblemDetail $problemDetail): SuccessfulOperationMessageResource
     {
         return $this->submitTrainingJob($dataset->getFullPath(), $problemDetail);
-    }
-
-    private function trainUrl(): string
-    {
-        return config('app.ml_api_url').config('app.endpoints.train');
-    }
-
-    private function mlHeaders(): array
-    {
-        return [
-            config('app.ml_platform_internal_auth.header') => config('app.ml_platform_internal_auth.token'),
-        ];
     }
 
     /**
@@ -48,14 +36,10 @@ class StartTrainingModel
         $handle = fopen($fullPath, 'r');
 
         try {
-            $response = Http::acceptJson()
-                ->withHeaders($this->mlHeaders())
-                ->attach('dataset', $handle, basename($fullPath))
-                ->post($this->trainUrl(), [
-                    'target_column' => $problemDetail->target_column,
-                    'problem_type' => $problemDetail->type->value,
-                ])
-                ->throw();
+            $response = $this->postToMlEngine($this->trainUrl(), [
+                'target_column' => $problemDetail->target_column,
+                'problem_type' => $problemDetail->type->value,
+            ], $handle, basename($fullPath));
 
             $taskId = data_get($response->json(), 'details.task_id');
 
@@ -72,5 +56,10 @@ class StartTrainingModel
         } finally {
             fclose($handle);
         }
+    }
+
+    private function trainUrl(): string
+    {
+        return config('app.ml_api_url').config('app.endpoints.train');
     }
 }
