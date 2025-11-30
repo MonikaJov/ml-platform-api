@@ -7,6 +7,7 @@ use Database\Factories\ProblemDetailFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -33,6 +34,12 @@ class ProblemDetail extends Model
     public function dataset(): BelongsTo
     {
         return $this->belongsTo(Dataset::class);
+    }
+
+    /** @return HasOne<BestModel, covariant ProblemDetail> */
+    public function bestModel(): HasOne
+    {
+        return $this->hasOne(BestModel::class);
     }
 
     protected static function newFactory(): ProblemDetailFactory

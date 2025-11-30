@@ -13,11 +13,11 @@ class FileMustExistMiddleware
         /** @var Dataset $dataset */
         $dataset = $request->route('dataset');
 
-        if (! file_exists($dataset->getFullPath())) {
+        if (! file_exists($dataset->full_path)) {
             return response()->json(['error' => __('The dataset file does not exist.')], 422);
         }
 
-        if (@fopen($dataset->getFullPath(), 'r') === false) {
+        if (@fopen($dataset->full_path, 'r') === false) {
             return response()->json(['error' => __('The dataset file cannot be opened.')], 422);
         }
 

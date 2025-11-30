@@ -29,7 +29,7 @@ it('stores a dataset', function (array $datasetData) {
     $response = $this->postJson(route($this->routeName), $datasetData);
 
     expect($response->status())->toBe(200)
-        ->and($response->json())->toHaveKeys(['id', 'has_null', 'column_names', 'created_at', 'updated_at']);
+        ->and($response->json())->toHaveKeys(['id', 'has_null', 'name', 'column_names', 'created_at', 'updated_at']);
 
     $this->assertDatabaseHas('datasets', [
         'user_id' => $this->user->id,

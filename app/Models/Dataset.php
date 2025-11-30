@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Database\Factories\DatasetFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Storage;
  * @property bool $has_null
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property string $full_path
+ * @property string $name
  */
 class Dataset extends Model
 {
@@ -44,9 +47,20 @@ class Dataset extends Model
         return $this->hasOne(ProblemDetail::class);
     }
 
-    public function getFullPath(): string
+    /** @return Attribute<int, null> */
+    protected function fullPath(): Attribute
     {
-        return Storage::disk('datasets')->path($this->path);
+        return new Attribute(
+            get: fn () => (Storage::disk('datasets')->path($this->path))
+        );
+    }
+
+    /** @return Attribute<int, null> */
+    protected function name(): Attribute
+    {
+        return new Attribute(
+            get: fn () => (pathinfo($this->path, PATHINFO_FILENAME))
+        );
     }
 
     protected static function newFactory(): DatasetFactory
