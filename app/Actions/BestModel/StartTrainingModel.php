@@ -9,7 +9,6 @@ use App\Models\ProblemDetail;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,11 +23,19 @@ class StartTrainingModel
      */
     public function handle(Dataset $dataset, ProblemDetail $problemDetail): SuccessfulOperationMessageResource
     {
-        $url = config('app.ml_api_url').config('app.endpoints.train');
+        return $this->submitTrainingJob($dataset->getFullPath(), $problemDetail);
+    }
 
-        $fullPath = Storage::disk('datasets')->path($dataset->path);
+    private function trainUrl(): string
+    {
+        return config('app.ml_api_url').config('app.endpoints.train');
+    }
 
-        return $this->submitTrainingJob($url, $fullPath, $problemDetail);
+    private function mlHeaders(): array
+    {
+        return [
+            config('app.ml_platform_internal_auth.header') => config('app.ml_platform_internal_auth.token'),
+        ];
     }
 
     /**
@@ -36,17 +43,15 @@ class StartTrainingModel
      * @throws ConnectionException
      * @throws MlEngineResponseException
      */
-    private function submitTrainingJob(string $url, string $fullPath, ProblemDetail $problemDetail): SuccessfulOperationMessageResource
+    private function submitTrainingJob(string $fullPath, ProblemDetail $problemDetail): SuccessfulOperationMessageResource
     {
         $handle = fopen($fullPath, 'r');
 
         try {
             $response = Http::acceptJson()
-                ->withHeaders([
-                    config('app.ml_platform_internal_auth.header') => config('app.ml_platform_internal_auth.token'),
-                ])
+                ->withHeaders($this->mlHeaders())
                 ->attach('dataset', $handle, basename($fullPath))
-                ->post($url, [
+                ->post($this->trainUrl(), [
                     'target_column' => $problemDetail->target_column,
                     'problem_type' => $problemDetail->type->value,
                 ])
