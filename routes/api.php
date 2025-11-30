@@ -7,6 +7,7 @@ use App\Http\Controllers\BestModel\MakePredictionController;
 use App\Http\Controllers\BestModel\StartTrainingModelController;
 use App\Http\Controllers\BestModel\StoreBestModelController;
 use App\Http\Controllers\Dataset\DeleteDatasetController;
+use App\Http\Controllers\Dataset\IndexDatasetController;
 use App\Http\Controllers\Dataset\StoreDatasetController;
 use App\Http\Controllers\ProblemDetail\StoreProblemDetailController;
 use App\Http\Controllers\User\DeleteUserController;
@@ -29,10 +30,10 @@ Route::middleware(['token'])
         Route::prefix('/datasets')
             ->name('datasets.')
             ->group(function () {
-                // TODO: Add get datastes route
                 Route::post('/', StoreDatasetController::class)->name('store');
                 // NOTE: remember to add observations when deleting dataset (also delete problem details)
                 Route::delete('/{dataset}', DeleteDatasetController::class)->name('delete')->middleware('can:delete,dataset');
+                Route::get('/', IndexDatasetController::class)->name('index');
             });
         Route::prefix('datasets/{dataset}/problem-details')
             ->name('dataset.problem-details.')
