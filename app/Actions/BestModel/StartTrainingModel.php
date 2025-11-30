@@ -23,7 +23,7 @@ class StartTrainingModel
      */
     public function handle(Dataset $dataset, ProblemDetail $problemDetail): SuccessfulOperationMessageResource
     {
-        return $this->submitTrainingJob($dataset->getFullPath(), $problemDetail);
+        return $this->submitTrainingJob($dataset->full_path, $problemDetail);
     }
 
     /**
