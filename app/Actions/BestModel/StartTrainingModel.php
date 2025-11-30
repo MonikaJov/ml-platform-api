@@ -6,16 +6,15 @@ use App\Exceptions\MlEngine\MlEngineResponseException;
 use App\Http\Resources\SuccessfulOperationMessageResource;
 use App\Models\Dataset;
 use App\Models\ProblemDetail;
+use App\Traits\MlEngineRequestTrait;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Symfony\Component\HttpFoundation\Response;
 
 class StartTrainingModel
 {
-    use AsAction;
+    use AsAction, MlEngineRequestTrait;
 
     /**
      * @throws RequestException
@@ -24,11 +23,7 @@ class StartTrainingModel
      */
     public function handle(Dataset $dataset, ProblemDetail $problemDetail): SuccessfulOperationMessageResource
     {
-        $url = config('app.ml_api_url').config('app.endpoints.train');
-
-        $fullPath = Storage::disk('datasets')->path($dataset->path);
-
-        return $this->submitTrainingJob($url, $fullPath, $problemDetail);
+        return $this->submitTrainingJob($dataset->getFullPath(), $problemDetail);
     }
 
     /**
@@ -36,21 +31,15 @@ class StartTrainingModel
      * @throws ConnectionException
      * @throws MlEngineResponseException
      */
-    private function submitTrainingJob(string $url, string $fullPath, ProblemDetail $problemDetail): SuccessfulOperationMessageResource
+    private function submitTrainingJob(string $fullPath, ProblemDetail $problemDetail): SuccessfulOperationMessageResource
     {
         $handle = fopen($fullPath, 'r');
 
         try {
-            $response = Http::acceptJson()
-                ->withHeaders([
-                    config('app.ml_platform_internal_auth.header') => config('app.ml_platform_internal_auth.token'),
-                ])
-                ->attach('dataset', $handle, basename($fullPath))
-                ->post($url, [
-                    'target_column' => $problemDetail->target_column,
-                    'problem_type' => $problemDetail->type->value,
-                ])
-                ->throw();
+            $response = $this->postToMlEngine($this->trainUrl(), [
+                'target_column' => $problemDetail->target_column,
+                'problem_type' => $problemDetail->type->value,
+            ], $handle, basename($fullPath));
 
             $taskId = data_get($response->json(), 'details.task_id');
 
@@ -67,5 +56,10 @@ class StartTrainingModel
         } finally {
             fclose($handle);
         }
+    }
+
+    private function trainUrl(): string
+    {
+        return config('app.ml_api_url').config('app.endpoints.train');
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RefreshController;
+use App\Http\Controllers\BestModel\MakePredictionController;
 use App\Http\Controllers\BestModel\StartTrainingModelController;
 use App\Http\Controllers\BestModel\StoreBestModelController;
 use App\Http\Controllers\Dataset\DeleteDatasetController;
@@ -44,6 +45,7 @@ Route::middleware(['token'])
             ->name('dataset.problem-detail.best-models.')
             ->group(function () {
                 Route::post('/train', StartTrainingModelController::class)->name('train')->middleware('records_must_be_related:dataset,problem_detail', 'file_must_exist');
+                Route::post('/{best_model}/predict', MakePredictionController::class)->name('predict')->middleware('records_must_be_related:dataset,problem_detail', 'records_must_be_related:problem_detail,best_model');
             });
     });
 

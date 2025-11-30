@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Observed by DatasetObserver::class
@@ -41,6 +42,11 @@ class Dataset extends Model
     public function problemDetail(): HasOne
     {
         return $this->hasOne(ProblemDetail::class);
+    }
+
+    public function getFullPath(): string
+    {
+        return Storage::disk('datasets')->path($this->path);
     }
 
     protected static function newFactory(): DatasetFactory
