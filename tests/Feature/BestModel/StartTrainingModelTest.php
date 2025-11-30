@@ -44,7 +44,7 @@ dataset('dataset', [
     },
 ]);
 
-it('stores a dataset', function () {
+it('successfully starts training a model', function () {
     $response = $this->postJson(route($this->routeName, [
         'dataset' => $this->dataset->id,
         'problem_detail' => $this->problemDetail->id,
@@ -76,7 +76,7 @@ it('cannot train if problem detail does not belong to dataset', function () {
 
     expect($response->status())
         ->toBe(422)
-        ->and($response->json('error'))->toBe('Problem detail does not belong to the given Dataset.');
+        ->and($response->json('error'))->toBe('ProblemDetail does not belong to the given Dataset.');
 })->with('dataset');
 
 it('cannot train if dataset path does not exist', function () {

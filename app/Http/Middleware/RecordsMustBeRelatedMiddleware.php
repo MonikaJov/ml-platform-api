@@ -22,8 +22,8 @@ class RecordsMustBeRelatedMiddleware
 
         if (data_get($child, $foreignKey) !== $parent->getKey()) {
             return response()->json(['error' => __(':child does not belong to the given :parent.', [
-                'child' => __('Problem detail'),
-                'parent' => __('Dataset'),
+                'child' => __(class_basename($child)),
+                'parent' => __(class_basename($parent)),
             ])], 422);
         }
 
