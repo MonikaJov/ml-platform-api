@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Storage;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property string $full_path
+ * @property string $name
  */
 class Dataset extends Model
 {
@@ -51,6 +52,14 @@ class Dataset extends Model
     {
         return new Attribute(
             get: fn () => (Storage::disk('datasets')->path($this->path))
+        );
+    }
+
+    /** @return Attribute<int, null> */
+    protected function name(): Attribute
+    {
+        return new Attribute(
+            get: fn () => (pathinfo($this->path, PATHINFO_FILENAME))
         );
     }
 
