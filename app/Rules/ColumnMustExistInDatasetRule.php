@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 use App\Models\Dataset;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class ColumnMustExistInDatasetRule implements ValidationRule
+final class ColumnMustExistInDatasetRule implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {

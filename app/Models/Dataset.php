@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Database\Factories\DatasetFactory;
@@ -24,7 +26,7 @@ use Illuminate\Support\Facades\Storage;
  * @property string $full_path
  * @property string $name
  */
-class Dataset extends Model
+final class Dataset extends Model
 {
     /** @use HasFactory<DatasetFactory> */
     use HasFactory;
@@ -47,6 +49,11 @@ class Dataset extends Model
         return $this->hasOne(ProblemDetail::class);
     }
 
+    protected static function newFactory(): DatasetFactory
+    {
+        return DatasetFactory::new();
+    }
+
     /** @return Attribute<int, null> */
     protected function fullPath(): Attribute
     {
@@ -59,12 +66,7 @@ class Dataset extends Model
     protected function name(): Attribute
     {
         return new Attribute(
-            get: fn () => (pathinfo($this->path, PATHINFO_FILENAME))
+            get: fn () => pathinfo($this->path, PATHINFO_FILENAME)
         );
-    }
-
-    protected static function newFactory(): DatasetFactory
-    {
-        return DatasetFactory::new();
     }
 }

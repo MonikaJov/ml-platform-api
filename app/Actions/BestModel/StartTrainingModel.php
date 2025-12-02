@@ -1,25 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\BestModel;
 
-use App\Exceptions\MlEngine\MlEngineResponseException;
+use App\Exceptions\MlEngine\MlEngineResponse;
 use App\Http\Resources\SuccessfulOperationMessageResource;
 use App\Models\Dataset;
 use App\Models\ProblemDetail;
-use App\Traits\MlEngineRequestTrait;
+use App\Traits\MlEngineRequest;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Symfony\Component\HttpFoundation\Response;
 
-class StartTrainingModel
+final class StartTrainingModel
 {
-    use AsAction, MlEngineRequestTrait;
+    use AsAction, MlEngineRequest;
 
     /**
      * @throws RequestException
      * @throws ConnectionException
-     * @throws MlEngineResponseException
+     * @throws MlEngineResponse
      */
     public function handle(Dataset $dataset, ProblemDetail $problemDetail): SuccessfulOperationMessageResource
     {
@@ -29,7 +31,7 @@ class StartTrainingModel
     /**
      * @throws RequestException
      * @throws ConnectionException
-     * @throws MlEngineResponseException
+     * @throws MlEngineResponse
      */
     private function submitTrainingJob(string $fullPath, ProblemDetail $problemDetail): SuccessfulOperationMessageResource
     {
@@ -44,7 +46,7 @@ class StartTrainingModel
             $taskId = data_get($response->json(), 'details.task_id');
 
             if (! $taskId) {
-                throw new MlEngineResponseException(
+                throw new MlEngineResponse(
                     "ML API didn't return a valid task_id. Response: ".json_encode($response->json())
                 );
             }

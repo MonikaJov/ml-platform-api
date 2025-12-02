@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\Auth;
 
 use App\Http\Resources\BaseJsonResource;
@@ -9,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class AuthResource extends BaseJsonResource
+final class AuthResource extends BaseJsonResource
 {
     private string $accessToken;
 
@@ -17,11 +19,11 @@ class AuthResource extends BaseJsonResource
 
     private User $user;
 
-    public function __construct($resource, string $accessToken)
+    public function __construct(mixed $resource, string $accessToken)
     {
         parent::__construct($resource);
         $this->accessToken = $accessToken;
-        self::setExpiresAt();
+        $this->expiresAt = $this->extractExpiryFromToken($accessToken);
         $this->user = auth()->user();
     }
 
@@ -30,7 +32,7 @@ class AuthResource extends BaseJsonResource
         return new self(null, $token);
     }
 
-    /** @return array<string, string> */
+    /** @return array<string, string|UserResource|Carbon> */
     public function toArray(Request $request): array
     {
         return [
@@ -40,8 +42,8 @@ class AuthResource extends BaseJsonResource
         ];
     }
 
-    private function setExpiresAt(): void
+    private function extractExpiryFromToken(string $token): Carbon
     {
-        $this->expiresAt = Carbon::createFromTimestamp(JWTAuth::setToken($this->accessToken)->getPayload()->get('exp'));
+        return Carbon::createFromTimestamp(JWTAuth::setToken($token)->getPayload()->get('exp'));
     }
 }

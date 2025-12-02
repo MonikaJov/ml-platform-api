@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Response;
 
-class BaseJsonResource extends JsonResource
+abstract class BaseJsonResource extends JsonResource
 {
     protected int $statusCode = Response::HTTP_OK;
 
@@ -16,7 +20,7 @@ class BaseJsonResource extends JsonResource
         return $this;
     }
 
-    public function withResponse($request, $response): void
+    public function withResponse(Request $request, JsonResponse $response): void
     {
         $response->setStatusCode($this->statusCode);
     }

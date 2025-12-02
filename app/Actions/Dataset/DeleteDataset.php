@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Dataset;
 
 use App\Http\Resources\SuccessfulOperationMessageResource;
@@ -7,7 +9,7 @@ use App\Models\Dataset;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Symfony\Component\HttpFoundation\Response;
 
-class DeleteDataset
+final class DeleteDataset
 {
     use AsAction;
 

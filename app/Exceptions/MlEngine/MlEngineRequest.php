@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions\MlEngine;
 
 use App\Exceptions\BaseException;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class MlEngineRequestException extends BaseException
+final class MlEngineRequest extends BaseException
 {
     private const int DEFAULT_HTTP_CODE = Response::HTTP_BAD_GATEWAY;
 
@@ -25,7 +27,9 @@ class MlEngineRequestException extends BaseException
 
     public function getDisplayCode(): int
     {
-        return $this->getCode() ?: self::DEFAULT_HTTP_CODE;
+        $code = $this->getCode();
+
+        return $code !== null ? $code : self::DEFAULT_HTTP_CODE;
     }
 
     private function defaultMessage(): string

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\User;
 
 use App\Http\Requests\User\PatchUserRequest;
@@ -7,7 +9,7 @@ use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class PatchUser
+final class PatchUser
 {
     use AsAction;
 

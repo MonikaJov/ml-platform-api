@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -7,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class RecordsMustBeRelatedMiddleware
+final class RecordsMustBeRelatedMiddleware
 {
     public function handle(Request $request, Closure $next, string $parentParam, string $childParam, ?string $foreignKey = null): mixed
     {
@@ -24,7 +26,8 @@ class RecordsMustBeRelatedMiddleware
             return response()->json(['error' => __(':child does not belong to the given :parent.', [
                 'child' => __(class_basename($child)),
                 'parent' => __(class_basename($parent)),
-            ])], 422);
+            ]),
+            ], 422);
         }
 
         return $next($request);

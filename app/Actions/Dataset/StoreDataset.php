@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Dataset;
 
 use App\Http\Requests\Dataset\StoreDatasetRequest;
@@ -11,7 +13,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class StoreDataset
+final class StoreDataset
 {
     use AsAction;
 
@@ -37,8 +39,10 @@ class StoreDataset
     {
         $headers = [];
 
-        if (($handle = fopen($file->getRealPath(), 'r')) !== false) {
-            $headers = fgetcsv($handle) ?: [];
+        $handle = fopen($file->getRealPath(), 'r');
+        if ($handle !== false) {
+            $line = fgetcsv($handle);
+            $headers = $line !== false ? $line : [];
             fclose($handle);
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -18,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class BestModel extends Model
+final class BestModel extends Model
 {
     /** @use HasFactory<BestModelFactory> */
     use HasFactory;

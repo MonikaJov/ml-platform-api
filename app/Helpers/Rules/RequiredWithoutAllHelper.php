@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers\Rules;
 
 use Illuminate\Support\Collection;
 
-class RequiredWithoutAllHelper
+final class RequiredWithoutAllHelper
 {
     protected Collection $columns;
 

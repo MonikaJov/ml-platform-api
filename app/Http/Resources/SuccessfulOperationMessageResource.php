@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 
-class SuccessfulOperationMessageResource extends BaseJsonResource
+final class SuccessfulOperationMessageResource extends BaseJsonResource
 {
-    public string $message;
+    private string $message;
 
-    public int $code;
+    private int $code;
 
-    public ?array $details;
+    private ?array $details;
 
-    public function __construct($resource)
+    public function __construct(mixed $resource)
     {
         $this->message = $resource['message'];
         $this->code = $resource['code'];
@@ -21,6 +23,7 @@ class SuccessfulOperationMessageResource extends BaseJsonResource
         parent::__construct($resource);
     }
 
+    /** @return array<string, string|int> */
     public function toArray(Request $request): array
     {
         return [

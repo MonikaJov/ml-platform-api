@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Actions\Auth\Refresh;
@@ -11,7 +13,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
-class RefreshController extends Controller
+final class RefreshController extends Controller
 {
     /**
      * api.auth.refresh
@@ -23,7 +25,7 @@ class RefreshController extends Controller
         } catch (TokenInvalidException $e) {
             return response()->json(['error' => __('Invalid token.')], 400);
         } catch (TokenExpiredException $e) {
-            return response()->json(['error' => (__('Token has expired.'))], 401);
+            return response()->json(['error' => __('Token has expired.')], 401);
         } catch (JWTException $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }

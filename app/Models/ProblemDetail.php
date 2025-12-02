@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\ProblemDetailTypeEnum;
@@ -21,7 +23,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class ProblemDetail extends Model
+final class ProblemDetail extends Model
 {
     /** @use HasFactory<ProblemDetailFactory> */
     use HasFactory;

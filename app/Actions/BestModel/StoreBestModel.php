@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\BestModel;
 
 use App\Http\Requests\BestModel\StoreBestModelRequest;
@@ -8,7 +10,7 @@ use App\Models\BestModel;
 use App\Models\ProblemDetail;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class StoreBestModel
+final class StoreBestModel
 {
     use AsAction;
 
@@ -25,7 +27,8 @@ class StoreBestModel
                 'path' => $request->validated()['model_path'],
                 'name' => $request->validated()['model_type'],
                 'performance' => json_encode($request->validated()['performance']),
-            ]);
+            ]
+        );
 
         return BestModelResource::make($bestModel->load('problemDetail', 'dataset.user'));
     }

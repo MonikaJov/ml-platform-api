@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -12,7 +14,7 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class EnsureApiTokenIsValidMiddleware
+final class EnsureApiTokenIsValidMiddleware
 {
     protected AuthManager $auth;
 
@@ -21,7 +23,7 @@ class EnsureApiTokenIsValidMiddleware
         $this->auth = $auth;
     }
 
-    public function handle(Request $request, Closure $next, ...$guards): mixed
+    public function handle(Request $request, Closure $next, mixed ...$guards): mixed
     {
         try {
             $this->authenticate($request, $guards);
@@ -39,6 +41,8 @@ class EnsureApiTokenIsValidMiddleware
     }
 
     /**
+     * @param  array<string, int|string>  $guards
+     *
      * @throws AuthenticationException
      * @throws TokenInvalidException
      * @throws TokenExpiredException
@@ -46,7 +50,7 @@ class EnsureApiTokenIsValidMiddleware
      */
     protected function authenticate(Request $request, array $guards): void
     {
-        if (empty($guards)) {
+        if ($guards === []) {
             $guards = [null];
         }
 
@@ -57,8 +61,8 @@ class EnsureApiTokenIsValidMiddleware
                 return;
             }
         }
-
-        if (! $user = JWTAuth::parseToken()->authenticate()) {
+        $user = JWTAuth::parseToken()->authenticate();
+        if (! $user) {
             throw new AuthenticationException(__('Unauthenticated.'), $guards);
         }
 
@@ -80,10 +84,10 @@ class EnsureApiTokenIsValidMiddleware
 
     protected function expiredToken(): JsonResponse
     {
-        return response()->json(['error' => (__('Token has expired.'))], 401);
+        return response()->json(['error' => __('Token has expired.')], 401);
     }
 
-    protected function tokenError($message): JsonResponse
+    protected function tokenError(string $message): JsonResponse
     {
         return response()->json(['error' => $message], 400);
     }

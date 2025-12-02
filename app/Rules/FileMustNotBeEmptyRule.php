@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Http\UploadedFile;
 
-class FileMustNotBeEmptyRule implements ValidationRule
+final class FileMustNotBeEmptyRule implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
@@ -14,18 +16,25 @@ class FileMustNotBeEmptyRule implements ValidationRule
             return;
         }
 
-        $handle = fopen($value->getRealPath(), 'r');
+        $validRowCount = $this->countValidRows($value);
+
+        if ($validRowCount < 2) {
+            $fail('The file needs to have at least two non-empty rows.');
+        }
+    }
+
+    private function countValidRows(UploadedFile $file): int
+    {
+        $handle = fopen($file->getRealPath(), 'r');
 
         if (! $handle) {
-            $fail('The file could not be opened.');
-
-            return;
+            return 0;
         }
 
         $validRowCount = 0;
 
         while (($row = fgetcsv($handle)) !== false) {
-            if (! empty(array_filter($row))) {
+            if (count(array_filter($row)) > 0) {
                 $validRowCount++;
             }
 
@@ -36,8 +45,6 @@ class FileMustNotBeEmptyRule implements ValidationRule
 
         fclose($handle);
 
-        if ($validRowCount < 2) {
-            $fail('The file needs to have at least two non-empty rows.');
-        }
+        return $validRowCount;
     }
 }

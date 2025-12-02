@@ -1,6 +1,6 @@
 <?php
 
-use App\Exceptions\NotFoundException;
+use App\Exceptions\NotFound;
 use App\Http\Middleware\EnsureApiTokenIsValidMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -27,7 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
             //            });
             $exceptions->dontReport(NotFoundHttpException::class);
             $exceptions->render(function (NotFoundHttpException $e) {
-                throw new NotFoundException;
+                throw new NotFound;
             });
         }
     })->create();
