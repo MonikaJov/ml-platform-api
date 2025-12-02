@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions\Auth;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class FailedAuthException extends Exception
+final class FailedAuth extends Exception
 {
-    private const DEFAULT_HTTP_CODE = Response::HTTP_BAD_REQUEST;
+    private const int DEFAULT_HTTP_CODE = Response::HTTP_BAD_REQUEST;
 
     /**
      * Render the exception into an HTTP JSON response.
@@ -20,12 +22,12 @@ class FailedAuthException extends Exception
 
     public function getDisplayMessage(): string
     {
-        return $this->getMessage() != '' ? $this->getMessage() : $this->defaultMessage();
+        return $this->getMessage() !== '' ? $this->getMessage() : $this->defaultMessage();
     }
 
     public function getDisplayCode(): int
     {
-        return $this->getCode() != 0 ? $this->getCode() : self::DEFAULT_HTTP_CODE;
+        return $this->getCode() !== 0 ? $this->getCode() : self::DEFAULT_HTTP_CODE;
     }
 
     private function defaultMessage(): string

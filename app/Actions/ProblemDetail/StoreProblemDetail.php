@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\ProblemDetail;
 
 use App\Http\Requests\ProblemDetails\StoreProblemDetailRequest;
@@ -8,7 +10,7 @@ use App\Models\Dataset;
 use App\Models\ProblemDetail;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class StoreProblemDetail
+final class StoreProblemDetail
 {
     use AsAction;
 

@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class BaseResourceCollection extends ResourceCollection
+abstract class BaseResourceCollection extends ResourceCollection
 {
     public array $pagination = [];
 
-    public function __construct($resource)
+    public function __construct(mixed $resource)
     {
         if ($resource instanceof LengthAwarePaginator) {
             $this->pagination = [
@@ -26,7 +30,7 @@ class BaseResourceCollection extends ResourceCollection
         parent::__construct($resource);
     }
 
-    public function withResponse($request, $response): void
+    public function withResponse(Request $request, JsonResponse $response): void
     {
         $data = $response->getData(true);
         unset($data['meta'], $data['links']);

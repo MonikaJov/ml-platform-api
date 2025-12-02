@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Dataset;
 
 use App\Filters\Dataset\DatasetNameFilter;
@@ -10,7 +12,7 @@ use Lorisleiva\Actions\Concerns\AsAction;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class IndexDataset
+final class IndexDataset
 {
     use AsAction;
 
@@ -19,7 +21,7 @@ class IndexDataset
         $datasets = QueryBuilder::for(Dataset::class)
             ->allowedFilters([
                 AllowedFilter::exact('id'),
-                AllowedFilter::custom('name', new DatasetNameFilter),
+                AllowedFilter::custom('name', new DatasetNameFilter()),
             ])
             ->allowedSorts(['id', 'created_at', 'updated_at'])
             ->defaultSort('-created_at')

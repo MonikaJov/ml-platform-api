@@ -1,45 +1,58 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 use App\Enums\ProblemDetailTypeEnum;
 use App\Models\Dataset;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Support\Collection;
 
-class TargetColumnIsSuitableForProblemTypeRule implements ValidationRule
+final class TargetColumnIsSuitableForProblemTypeRule implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $type = request()->input('type');
-
         if (! $type) {
             return;
         }
+
         /** @var Dataset $dataset */
         $dataset = request()->route('dataset');
-
-        $handle = @fopen($dataset->full_path, 'r');
-
-        $header = fgetcsv($handle);
-        $targetIndex = array_search($value, $header, true);
-
-        if ($targetIndex === false) {
-            fclose($handle);
-            $fail('Target column "'.$value.'" does not exist in dataset.');
-
+        $values = $this->extractColumnValues($dataset, $value, $fail);
+        if ($values === null) {
             return;
         }
 
-        $values = [];
+        $unique = collect($values)->unique()->values();
 
+        $this->validateByType($unique, $type, $value, $fail);
+    }
+
+    /** @return array<string, string|int>|null */
+    private function extractColumnValues(Dataset $dataset, string|int $column, Closure $fail): ?array
+    {
+        $handle = fopen($dataset->full_path, 'r');
+        if (! $handle) {
+            return null;
+        }
+
+        $header = fgetcsv($handle);
+        $targetIndex = array_search($column, $header, true);
+        if ($targetIndex === false) {
+            fclose($handle);
+            $fail('Target column "'.$column.'" does not exist in dataset.');
+
+            return null;
+        }
+        $values = [];
         while (($row = fgetcsv($handle)) !== false) {
             if (! array_key_exists($targetIndex, $row)) {
                 continue;
             }
-
-            $cell = trim((string) $row[$targetIndex]);
-
+            $cell = mb_trim((string) $row[$targetIndex]);
             if ($cell !== '') {
                 $values[] = $cell;
             }
@@ -47,18 +60,21 @@ class TargetColumnIsSuitableForProblemTypeRule implements ValidationRule
 
         fclose($handle);
 
-        $unique = collect($values)->unique()->values();
+        return $values;
+    }
 
+    private function validateByType(Collection $unique, string $type, string $column, Closure $fail): void
+    {
         match ($type) {
-            ProblemDetailTypeEnum::REGRESSION->value => $this->validateRegression($unique, $value, $fail),
-            ProblemDetailTypeEnum::CLASSIFICATION->value => $this->validateClassification($unique, $value, $fail),
-            ProblemDetailTypeEnum::BINARY_CLASSIFICATION->value => $this->validateBinary($unique, $value, $fail),
-            ProblemDetailTypeEnum::CLUSTERING->value => $this->validateClustering($unique, $value, $fail),
+            ProblemDetailTypeEnum::REGRESSION->value => $this->validateRegression($unique, $column, $fail),
+            ProblemDetailTypeEnum::CLASSIFICATION->value => $this->validateClassification($unique, $column, $fail),
+            ProblemDetailTypeEnum::BINARY_CLASSIFICATION->value => $this->validateBinary($unique, $column, $fail),
+            ProblemDetailTypeEnum::CLUSTERING->value => $this->validateClustering($unique, $column, $fail),
             default => $fail('Unknown problem type.')
         };
     }
 
-    private function validateRegression($unique, $column, Closure $fail): void
+    private function validateRegression(Collection $unique, string $column, Closure $fail): void
     {
         foreach ($unique as $val) {
             if (! is_numeric($val)) {
@@ -66,27 +82,26 @@ class TargetColumnIsSuitableForProblemTypeRule implements ValidationRule
                 break;
             }
         }
-
         if ($unique->count() < 2) {
             $fail("Column '{$column}' is not suitable for regression; it needs more than one value.");
         }
     }
 
-    private function validateClassification($unique, $column, Closure $fail): void
+    private function validateClassification(Collection $unique, string $column, Closure $fail): void
     {
         if ($unique->count() < 2) {
             $fail("Column '{$column}' is not suitable for classification; it needs at least two distinct labels.");
         }
     }
 
-    private function validateBinary($unique, $column, Closure $fail): void
+    private function validateBinary(Collection $unique, string $column, Closure $fail): void
     {
         if ($unique->count() !== 2) {
             $fail("Column '{$column}' is not suitable for binary classification; it must have exactly two distinct labels.");
         }
     }
 
-    private function validateClustering($unique, $column, Closure $fail): void
+    private function validateClustering(Collection $unique, string $column, Closure $fail): void
     {
         if ($unique->count() > 0) {
             $fail("Column '{$column}' must be empty for clustering problems.");

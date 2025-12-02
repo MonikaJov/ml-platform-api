@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\Dataset;
 
 use App\Http\Resources\BaseJsonResource;
 use App\Http\Resources\ProblemDetail\ProblemDetailResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Dataset;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 /** @mixin Dataset */
-class DatasetResource extends BaseJsonResource
+final class DatasetResource extends BaseJsonResource
 {
+    /** @return array<string, int|string|UserResource|ProblemDetailResource|Carbon> */
     public function toArray(Request $request): array
     {
         return [

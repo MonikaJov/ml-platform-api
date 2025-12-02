@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions\MlEngine;
 
 use App\Exceptions\BaseException;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class MlEngineConnectionException extends BaseException
+final class MlEngineResponse extends BaseException
 {
-    private const int DEFAULT_HTTP_CODE = Response::HTTP_SERVICE_UNAVAILABLE;
+    private const int DEFAULT_HTTP_CODE = Response::HTTP_BAD_GATEWAY;
 
     public function render(): JsonResponse
     {
@@ -25,11 +27,13 @@ class MlEngineConnectionException extends BaseException
 
     public function getDisplayCode(): int
     {
-        return self::DEFAULT_HTTP_CODE;
+        $code = $this->getCode();
+
+        return $code !== null ? $code : self::DEFAULT_HTTP_CODE;
     }
 
     private function defaultMessage(): string
     {
-        return __('Failed to connect to the ML engine.');
+        return __('ML API did not return a valid response.');
     }
 }

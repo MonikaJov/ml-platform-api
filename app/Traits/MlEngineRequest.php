@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use Illuminate\Http\Client\ConnectionException;
@@ -7,8 +9,9 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
-trait MlEngineRequestTrait
+trait MlEngineRequest
 {
+    /** @return array<string, string> */
     protected function mlHeaders(): array
     {
         return [
@@ -17,10 +20,12 @@ trait MlEngineRequestTrait
     }
 
     /**
-     * @throws RequestException
+     * @param  array<int, string>  $data
+     *
      * @throws ConnectionException
+     * @throws RequestException
      */
-    protected function postToMlEngine(string $url, array $data, $fileHandle = null, ?string $fileName = null): Response
+    protected function postToMlEngine(string $url, array $data, mixed $fileHandle = null, ?string $fileName = null): Response
     {
         $request = Http::acceptJson()
             ->withHeaders($this->mlHeaders());

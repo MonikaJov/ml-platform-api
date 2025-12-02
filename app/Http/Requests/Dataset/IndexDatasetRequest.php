@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Dataset;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class IndexDatasetRequest extends FormRequest
+final class IndexDatasetRequest extends FormRequest
 {
     public function authorize(): bool
     {
         return true;
     }
 
+    /** @return array<string, string> */
     public function rules(): array
     {
         return [

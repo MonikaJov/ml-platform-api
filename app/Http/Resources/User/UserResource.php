@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\User;
 
 use App\Http\Resources\BaseJsonResource;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 /** @mixin User */
-class UserResource extends BaseJsonResource
+final class UserResource extends BaseJsonResource
 {
+    /** @return array<string, int|string|Carbon> */
     public function toArray(Request $request): array
     {
         return [

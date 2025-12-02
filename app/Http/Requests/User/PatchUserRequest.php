@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\User;
 
 use App\Helpers\Rules\RequiredWithoutAllHelper;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PatchUserRequest extends FormRequest
+final class PatchUserRequest extends FormRequest
 {
     private const array COLUMNS = [
         'username',
@@ -20,6 +22,7 @@ class PatchUserRequest extends FormRequest
         return true;
     }
 
+    /** @return array<string, string> */
     public function rules(): array
     {
         $requiredWithoutAllHelper = new RequiredWithoutAllHelper(collect(self::COLUMNS));

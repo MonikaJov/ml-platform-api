@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\BestModel;
 
 use App\Http\Resources\BaseJsonResource;
 use App\Http\Resources\Dataset\DatasetResource;
 use App\Http\Resources\ProblemDetail\ProblemDetailResource;
 use App\Models\BestModel;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 /** @mixin BestModel */
-class BestModelResource extends BaseJsonResource
+final class BestModelResource extends BaseJsonResource
 {
+    /** @return array<string, string|int|ProblemDetailResource|DatasetResource|Carbon> */
     public function toArray(Request $request): array
     {
         return [

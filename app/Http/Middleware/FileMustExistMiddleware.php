@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use App\Models\Dataset;
 use Closure;
 use Illuminate\Http\Request;
 
-class FileMustExistMiddleware
+final class FileMustExistMiddleware
 {
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         /** @var Dataset $dataset */
         $dataset = $request->route('dataset');
@@ -17,7 +19,11 @@ class FileMustExistMiddleware
             return response()->json(['error' => __('The dataset file does not exist.')], 422);
         }
 
-        $handle = @fopen($dataset->full_path, 'r');
+        if (! is_readable($dataset->full_path)) {
+            return response()->json(['error' => __('The dataset file cannot be opened.')], 422);
+        }
+
+        $handle = fopen($dataset->full_path, 'r');
 
         if ($handle === false) {
             return response()->json(['error' => __('The dataset file cannot be opened.')], 422);

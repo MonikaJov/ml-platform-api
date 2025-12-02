@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers\Dataset;
 
 use App\Models\Dataset;
 use Illuminate\Support\Facades\Storage;
 
-class DatasetObserver
+final class DatasetObserver
 {
     public function creating(Dataset $dataset): void
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Database\Factories\UserFactory;
@@ -24,7 +26,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class User extends Authenticatable implements JWTSubject
+final class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;

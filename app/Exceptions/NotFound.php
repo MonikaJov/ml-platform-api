@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions;
 
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class NotFoundException extends BaseException
+final class NotFound extends BaseException
 {
     private const int DEFAULT_HTTP_CODE = Response::HTTP_NOT_FOUND;
 

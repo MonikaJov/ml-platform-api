@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Actions\Auth\Logout;
@@ -7,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SuccessfulOperationMessageResource;
 use Symfony\Component\HttpFoundation\Response;
 
-class LogoutController extends Controller
+final class LogoutController extends Controller
 {
     /**
      * api.auth.logout

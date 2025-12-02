@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Http\Middleware\FileMustExistMiddleware;
@@ -9,7 +11,7 @@ use App\Http\Middleware\VerifyInternalServiceTokenMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider
+final class RouteServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
