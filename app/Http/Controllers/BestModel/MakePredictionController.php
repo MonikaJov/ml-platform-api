@@ -13,9 +13,11 @@ use App\Http\Resources\BestModel\PredictionResource;
 use App\Models\BestModel;
 use App\Models\Dataset;
 use App\Models\ProblemDetail;
+use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 
+#[Group('Best Model')]
 final class MakePredictionController extends Controller
 {
     /**

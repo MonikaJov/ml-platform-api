@@ -8,7 +8,9 @@ use App\Actions\Dataset\StoreDataset;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dataset\StoreDatasetRequest;
 use App\Http\Resources\Dataset\DatasetResource;
+use Dedoc\Scramble\Attributes\Group;
 
+#[Group('Dataset')]
 final class StoreDatasetController extends Controller
 {
     /**

@@ -8,7 +8,9 @@ use App\Actions\Dataset\IndexDataset;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dataset\IndexDatasetRequest;
 use App\Http\Resources\Dataset\DatasetResourceCollection;
+use Dedoc\Scramble\Attributes\Group;
 
+#[Group('Dataset')]
 final class IndexDatasetController extends Controller
 {
     /**

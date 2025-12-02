@@ -9,7 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\PatchUserRequest;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
+use Dedoc\Scramble\Attributes\Group;
 
+#[Group('User')]
 final class PatchUserController extends Controller
 {
     /**

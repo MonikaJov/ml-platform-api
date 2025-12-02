@@ -7,8 +7,10 @@ namespace App\Http\Controllers\Auth;
 use App\Actions\Auth\Logout;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SuccessfulOperationMessageResource;
+use Dedoc\Scramble\Attributes\Group;
 use Symfony\Component\HttpFoundation\Response;
 
+#[Group('Authentication')]
 final class LogoutController extends Controller
 {
     /**

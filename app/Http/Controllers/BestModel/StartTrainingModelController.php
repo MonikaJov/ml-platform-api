@@ -11,9 +11,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SuccessfulOperationMessageResource;
 use App\Models\Dataset;
 use App\Models\ProblemDetail;
+use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 
+#[Group('Best Model')]
 final class StartTrainingModelController extends Controller
 {
     /**
