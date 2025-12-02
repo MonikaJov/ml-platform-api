@@ -17,8 +17,18 @@ class FileMustExistMiddleware
             return response()->json(['error' => __('The dataset file does not exist.')], 422);
         }
 
-        if (@fopen($dataset->full_path, 'r') === false) {
+        $handle = @fopen($dataset->full_path, 'r');
+
+        if ($handle === false) {
             return response()->json(['error' => __('The dataset file cannot be opened.')], 422);
+        }
+
+        $header = fgetcsv($handle);
+
+        fclose($handle);
+
+        if (! $header) {
+            return response()->json(['error' => __('Dataset file is empty or unreadable.')], 422);
         }
 
         return $next($request);
