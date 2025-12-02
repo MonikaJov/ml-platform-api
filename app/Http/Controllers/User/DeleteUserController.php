@@ -8,7 +8,9 @@ use App\Actions\User\DeleteUser;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SuccessfulOperationMessageResource;
 use App\Models\User;
+use Dedoc\Scramble\Attributes\Group;
 
+#[Group('User')]
 final class DeleteUserController extends Controller
 {
     /**

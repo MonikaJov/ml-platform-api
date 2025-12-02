@@ -8,7 +8,9 @@ use App\Actions\Auth\Login;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\Auth\AuthResource;
+use Dedoc\Scramble\Attributes\Group;
 
+#[Group('Authentication')]
 final class LoginController extends Controller
 {
     /**

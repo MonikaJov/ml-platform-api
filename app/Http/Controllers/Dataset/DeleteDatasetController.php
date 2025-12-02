@@ -8,7 +8,9 @@ use App\Actions\Dataset\DeleteDataset;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SuccessfulOperationMessageResource;
 use App\Models\Dataset;
+use Dedoc\Scramble\Attributes\Group;
 
+#[Group('Dataset')]
 final class DeleteDatasetController extends Controller
 {
     /**

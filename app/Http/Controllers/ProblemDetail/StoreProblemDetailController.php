@@ -9,7 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProblemDetails\StoreProblemDetailRequest;
 use App\Http\Resources\ProblemDetail\ProblemDetailResource;
 use App\Models\Dataset;
+use Dedoc\Scramble\Attributes\Group;
 
+#[Group('Problem Detail')]
 final class StoreProblemDetailController extends Controller
 {
     /**

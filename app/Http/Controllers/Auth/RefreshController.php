@@ -7,12 +7,14 @@ namespace App\Http\Controllers\Auth;
 use App\Actions\Auth\Refresh;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Auth\AuthResource;
+use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
+#[Group('Authentication')]
 final class RefreshController extends Controller
 {
     /**
