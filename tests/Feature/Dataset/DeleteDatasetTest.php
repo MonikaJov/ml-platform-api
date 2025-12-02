@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\BestModel;
 use App\Models\Dataset;
+use App\Models\ProblemDetail;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -26,13 +28,24 @@ dataset('dataset', [
             'path' => $this->user->id.'/'.$file->name,
             'user_id' => $this->user->id,
         ]);
+
+        $this->problemDetail = ProblemDetail::factory()->create([
+            'dataset_id' => $this->dataset->id,
+        ]);
+
+        BestModel::factory()->create([
+            'problem_detail_id' => $this->problemDetail->id,
+            'dataset_id' => $this->dataset->id,
+        ]);
     },
 ]);
 
-it('deletes a dataset', function () {
+it('deletes a dataset with problem detail and best model', function () {
     $this->assertDatabaseHas('datasets', [
         'path' => $this->dataset->path,
     ]);
+    $this->assertDatabaseCount('problem_details', 1);
+    $this->assertDatabaseCount('best_models', 1);
 
     Storage::disk('datasets')->assertExists($this->dataset->path);
 
@@ -48,6 +61,8 @@ it('deletes a dataset', function () {
     $this->assertDatabaseMissing('datasets', [
         'path' => $this->dataset->path,
     ]);
+    $this->assertDatabaseCount('problem_details', 0);
+    $this->assertDatabaseCount('best_models', 0);
 
     Storage::disk('datasets')->assertMissing($this->dataset->path);
 })->with('dataset');

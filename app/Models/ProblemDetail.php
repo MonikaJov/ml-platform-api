@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
+ * Observed by ProblemDetailObserver::class
+ *
  * @property int $id
  * @property ProblemDetailTypeEnum $type
  * @property string $target_column
