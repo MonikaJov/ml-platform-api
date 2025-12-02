@@ -37,6 +37,7 @@ Route::middleware(['token'])
             });
         Route::prefix('datasets/{dataset}/problem-details')
             ->name('dataset.problem-details.')
+            ->middleware('file_must_exist')
             ->group(function () {
                 // TODO: Add update and delete routes
                 // NOTE: remember to add observations when deleting problem detail

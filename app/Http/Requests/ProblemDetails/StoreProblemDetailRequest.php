@@ -3,7 +3,7 @@
 namespace App\Http\Requests\ProblemDetails;
 
 use App\Enums\ProblemDetailTypeEnum;
-use App\Rules\DatasetMustContainTargetColumnRule;
+use App\Rules\TargetColumnIsSuitableForProblemTypeRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -25,8 +25,7 @@ class StoreProblemDetailRequest extends FormRequest
             'target_column' => [
                 'required',
                 'string',
-                new DatasetMustContainTargetColumnRule,
-                // TODO: add TargetColumnMustNotBeEmptyRule() and TargetColumnIsSuitableForProblemTypeRule() once implemented
+                new TargetColumnIsSuitableForProblemTypeRule,
             ],
         ];
     }
