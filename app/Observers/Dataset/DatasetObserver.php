@@ -14,6 +14,8 @@ class DatasetObserver
 
     public function deleting(Dataset $dataset): void
     {
+        $dataset->problemDetail?->delete();
+
         Storage::disk('datasets')->delete($dataset->path);
     }
 }

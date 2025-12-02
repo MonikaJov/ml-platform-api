@@ -31,7 +31,6 @@ Route::middleware(['token'])
             ->name('datasets.')
             ->group(function () {
                 Route::post('/', StoreDatasetController::class)->name('store');
-                // NOTE: remember to add observations when deleting dataset (also delete problem details)
                 Route::delete('/{dataset}', DeleteDatasetController::class)->name('delete')->middleware('can:delete,dataset');
                 Route::get('/', IndexDatasetController::class)->name('index');
             });
@@ -40,7 +39,6 @@ Route::middleware(['token'])
             ->middleware('file_must_exist')
             ->group(function () {
                 // TODO: Add update and delete routes
-                // NOTE: remember to add observations when deleting problem detail
                 Route::post('/', StoreProblemDetailController::class)->name('store')->middleware(['can:create,App\Models\ProblemDetail,dataset', 'unique_per_model']);
             });
         Route::prefix('datasets/{dataset}/problem-details/{problem_detail}/best-models')
@@ -50,7 +48,6 @@ Route::middleware(['token'])
                 Route::post('/{best_model}/predict', MakePredictionController::class)->name('predict')->middleware('records_must_be_related:dataset,problem_detail', 'records_must_be_related:problem_detail,best_model');
             });
     });
-
 Route::middleware(['ml_engine_token'])
     ->group(function () {
         Route::prefix('best-models')
