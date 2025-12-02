@@ -10,8 +10,11 @@ use App\Models\User;
 use App\Observers\Dataset\DatasetObserver;
 use App\Observers\ProblemDetail\ProblemDetailObserver;
 use App\Observers\User\UserObserver;
+use Dedoc\Scramble\Scramble;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -26,5 +29,10 @@ final class AppServiceProvider extends ServiceProvider
         Dataset::observe(DatasetObserver::class);
         User::observe(UserObserver::class);
         ProblemDetail::observe(ProblemDetailObserver::class);
+
+        Scramble::configure()
+            ->routes(function (Route $route) {
+                return Str::startsWith($route->uri, 'api/');
+            });
     }
 }
