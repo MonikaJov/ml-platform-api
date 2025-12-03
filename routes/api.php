@@ -12,6 +12,7 @@ use App\Http\Controllers\Dataset\DeleteDatasetController;
 use App\Http\Controllers\Dataset\IndexDatasetController;
 use App\Http\Controllers\Dataset\StoreDatasetController;
 use App\Http\Controllers\Dataset\UpsertDatasetController;
+use App\Http\Controllers\ProblemDetail\PatchProblemDetailController;
 use App\Http\Controllers\ProblemDetail\StoreProblemDetailController;
 use App\Http\Controllers\User\DeleteUserController;
 use App\Http\Controllers\User\PatchUserController;
@@ -67,6 +68,12 @@ Route::middleware(['token'])
                     ->middleware([
                         'can:create,App\Models\ProblemDetail,dataset',
                         'unique_per_model',
+                    ]);
+                Route::patch('/{problem_detail}', PatchProblemDetailController::class)
+                    ->name('patch')
+                    ->middleware([
+                        'can:update,App\Models\ProblemDetail,dataset',
+                        'records_must_be_related:dataset,problem_detail',
                     ]);
             });
         Route::prefix('datasets/{dataset}/problem-details/{problem_detail}/best-models')
