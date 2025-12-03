@@ -35,9 +35,6 @@ final class TargetColumnIsSuitableForProblemTypeRule implements ValidationRule
     private function extractColumnValues(Dataset $dataset, string|int $column, Closure $fail): ?array
     {
         $handle = fopen($dataset->full_path, 'r');
-        if (! $handle) {
-            return null;
-        }
 
         $header = fgetcsv($handle);
         $targetIndex = array_search($column, $header, true);

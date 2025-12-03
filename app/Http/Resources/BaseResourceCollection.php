@@ -11,7 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 abstract class BaseResourceCollection extends ResourceCollection
 {
-    public array $pagination = [];
+    protected array $pagination = [];
 
     public function __construct(mixed $resource)
     {
