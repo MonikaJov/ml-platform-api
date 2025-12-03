@@ -6,10 +6,19 @@ namespace App\Rules;
 
 use App\Models\Dataset;
 use Closure;
+use Dedoc\Scramble\Support\Generator\Types\ObjectType;
 use Illuminate\Contracts\Validation\ValidationRule;
 
 final class ColumnMustExistInDatasetRule implements ValidationRule
 {
+    public static function docs(): ObjectType
+    {
+        $object = new ObjectType();
+        $object->setDescription('Column must exist in the dataset.');
+
+        return $object;
+    }
+
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         /** @var Dataset $dataset */

@@ -5,11 +5,20 @@ declare(strict_types=1);
 namespace App\Rules;
 
 use Closure;
+use Dedoc\Scramble\Support\Generator\Types\ObjectType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Http\UploadedFile;
 
 final class FileMustNotBeEmptyRule implements ValidationRule
 {
+    public static function docs(): ObjectType
+    {
+        $object = new ObjectType();
+        $object->setDescription('Uploaded file must not be empty.');
+
+        return $object;
+    }
+
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (! ($value instanceof UploadedFile)) {

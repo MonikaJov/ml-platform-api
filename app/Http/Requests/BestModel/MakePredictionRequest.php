@@ -14,10 +14,13 @@ final class MakePredictionRequest extends FormRequest
         return true;
     }
 
-    /** @return array<string, string> */
+    /** @return array<string, string|ColumnMustExistInDatasetRule> */
     public function rules(): array
     {
         return [
+            /**
+             * The columns must exist in the dataset.
+             */
             'data' => ['required', 'array'],
             'data.*' => ['required', new ColumnMustExistInDatasetRule()],
         ];

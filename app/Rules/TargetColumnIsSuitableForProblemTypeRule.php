@@ -7,11 +7,20 @@ namespace App\Rules;
 use App\Enums\ProblemDetailTypeEnum;
 use App\Models\Dataset;
 use Closure;
+use Dedoc\Scramble\Support\Generator\Types\ObjectType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Collection;
 
 final class TargetColumnIsSuitableForProblemTypeRule implements ValidationRule
 {
+    public static function docs(): ObjectType
+    {
+        $object = new ObjectType();
+        $object->setDescription('Target column must be suitable for the problem type.');
+
+        return $object;
+    }
+
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $type = request()->input('type');

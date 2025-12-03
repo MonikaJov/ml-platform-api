@@ -14,7 +14,7 @@ final class StoreDatasetRequest extends FormRequest
         return true;
     }
 
-    /** @return array<string, string> */
+    /** @return array<string, string|FileMustNotBeEmptyRule> */
     public function rules(): array
     {
         return [
