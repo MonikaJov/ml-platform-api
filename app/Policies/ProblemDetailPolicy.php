@@ -16,4 +16,9 @@ final class ProblemDetailPolicy
     {
         return $user->id === $dataset->user_id;
     }
+
+    public function update(User $user, Dataset $dataset): bool
+    {
+        return $user->id === $dataset->user_id;
+    }
 }
