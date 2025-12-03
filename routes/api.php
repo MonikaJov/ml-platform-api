@@ -11,6 +11,7 @@ use App\Http\Controllers\BestModel\StoreBestModelController;
 use App\Http\Controllers\Dataset\DeleteDatasetController;
 use App\Http\Controllers\Dataset\IndexDatasetController;
 use App\Http\Controllers\Dataset\StoreDatasetController;
+use App\Http\Controllers\Dataset\UpsertDatasetController;
 use App\Http\Controllers\ProblemDetail\StoreProblemDetailController;
 use App\Http\Controllers\User\DeleteUserController;
 use App\Http\Controllers\User\PatchUserController;
@@ -44,9 +45,18 @@ Route::middleware(['token'])
                     ->name('store');
                 Route::delete('/{dataset}', DeleteDatasetController::class)
                     ->name('delete')
-                    ->middleware('can:delete,dataset');
+                    ->middleware([
+                        'can:delete,dataset',
+                        'file_must_exist',
+                    ]);
                 Route::get('/', IndexDatasetController::class)
                     ->name('index');
+                Route::put('/{dataset}', UpsertDatasetController::class)
+                    ->name('upsert')
+                    ->middleware([
+                        'can:update,dataset',
+                        'file_must_exist',
+                    ]);
             });
         Route::prefix('datasets/{dataset}/problem-details')
             ->name('dataset.problem-details.')
