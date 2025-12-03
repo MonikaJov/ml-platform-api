@@ -10,6 +10,9 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertNotEquals;
+
 beforeEach(function () {
     $this->routeName = 'api.datasets.upsert';
 
@@ -51,6 +54,24 @@ dataset('dataset data', [
 ]);
 
 it('upserts a dataset', function (array $datasetData) {
+    $newRowCount = 0;
+    if (($handle = fopen($datasetData['dataset']->getRealPath(), 'r')) !== false) {
+        while (fgetcsv($handle) !== false) {
+            $newRowCount++;
+        }
+        fclose($handle);
+    }
+
+    $oldRowCount = 0;
+    if (($handle = fopen($this->dataset->full_path, 'r')) !== false) {
+        while (fgetcsv($handle) !== false) {
+            $oldRowCount++;
+        }
+        fclose($handle);
+    }
+
+    assertNotEquals($newRowCount, $oldRowCount);
+
     $this->assertDatabaseHas('datasets', [
         'user_id' => $this->user->id,
         'column_names' => 'id,name,email',
@@ -62,6 +83,16 @@ it('upserts a dataset', function (array $datasetData) {
 
     expect($response->status())->toBe(200)
         ->and($response->json())->toHaveKeys(['id', 'has_null', 'name', 'column_names', 'created_at', 'updated_at']);
+
+    $updatedRowCount = 0;
+    if (($handle = fopen($this->dataset->full_path, 'r')) !== false) {
+        while (fgetcsv($handle) !== false) {
+            $updatedRowCount++;
+        }
+        fclose($handle);
+    }
+
+    assertEquals($newRowCount, $updatedRowCount);
 
     $this->assertDatabaseHas('datasets', [
         'user_id' => $this->user->id,
