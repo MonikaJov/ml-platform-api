@@ -29,7 +29,7 @@ final class MlEngineResponse extends BaseException
     {
         $code = $this->getCode();
 
-        return $code !== null ? $code : self::DEFAULT_HTTP_CODE;
+        return $code ? $code : self::DEFAULT_HTTP_CODE;
     }
 
     private function defaultMessage(): string
