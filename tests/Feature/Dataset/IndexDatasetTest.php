@@ -72,7 +72,6 @@ it('lists datasets without filters', function () {
             'id',
             'problem_details',
             'name',
-            'has_null',
             'name',
             'column_names',
             'created_at',

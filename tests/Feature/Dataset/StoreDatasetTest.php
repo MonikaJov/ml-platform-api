@@ -19,7 +19,6 @@ beforeEach(function () {
 dataset('dataset data', [
     fn () => [
         'dataset' => UploadedFile::fake()->createWithContent('data.csv', 'id,name,email'.PHP_EOL.'1,Ana,ana@example.com'.PHP_EOL),
-        'has_null' => true,
     ],
 ]);
 
@@ -29,12 +28,11 @@ it('stores a dataset', function (array $datasetData) {
     $response = $this->postJson(route($this->routeName), $datasetData);
 
     expect($response->status())->toBe(200)
-        ->and($response->json())->toHaveKeys(['id', 'has_null', 'name', 'column_names', 'created_at', 'updated_at']);
+        ->and($response->json())->toHaveKeys(['id', 'name', 'column_names', 'created_at', 'updated_at']);
 
     $this->assertDatabaseHas('datasets', [
         'user_id' => $this->user->id,
         'column_names' => 'id,name,email',
-        'has_null' => true,
     ]);
 
     Storage::disk('datasets')->assertExists($response->json('data.path'));
@@ -43,11 +41,9 @@ it('stores a dataset', function (array $datasetData) {
 it('cannot store with invalid data', function () {
     $response = $this->postJson(route($this->routeName), [
         'dataset' => UploadedFile::fake()->create('data.txt', 100, 'text/plain'),
-        'has_null' => 'invalid',
     ]);
 
     expect($response->status())->toBe(422)
-        ->and($response->json('errors')['has_null'])->toContain('The has null field must be true or false.')
         ->and($response->json('errors')['dataset'])->toContain('The dataset field must be a file of type: csv.')
         ->and($response->json('errors')['dataset'])->toContain('The file needs to have at least two non-empty rows.');
 });

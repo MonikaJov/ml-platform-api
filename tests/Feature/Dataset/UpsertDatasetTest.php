@@ -31,7 +31,6 @@ dataset('dataset data', [
             'path' => $this->user->id.'/'.$file->name,
             'user_id' => $this->user->id,
             'column_names' => 'id,name,email',
-            'has_null' => 0,
         ]);
 
         $this->problemDetail = ProblemDetail::factory()->create([
@@ -82,7 +81,7 @@ it('upserts a dataset', function (array $datasetData) {
     ]), $datasetData);
 
     expect($response->status())->toBe(200)
-        ->and($response->json())->toHaveKeys(['id', 'has_null', 'name', 'column_names', 'created_at', 'updated_at']);
+        ->and($response->json())->toHaveKeys(['id', 'name', 'column_names', 'created_at', 'updated_at']);
 
     $updatedRowCount = 0;
     if (($handle = fopen($this->dataset->full_path, 'r')) !== false) {
