@@ -39,7 +39,6 @@ dataset('dataset data', [
 
         BestModel::factory()->create([
             'problem_detail_id' => $this->problemDetail->id,
-            'dataset_id' => $this->dataset->id,
         ]);
 
         return [

@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property string $path
  * @property int $problem_detail_id
- * @property int $dataset_id
  * @property string $name
  * @property string $performance
  * @property Carbon $created_at
@@ -31,12 +30,6 @@ final class BestModel extends Model
     public function problemDetail(): BelongsTo
     {
         return $this->belongsTo(ProblemDetail::class);
-    }
-
-    /** @return BelongsTo<Dataset, covariant BestModel> */
-    public function dataset(): BelongsTo
-    {
-        return $this->belongsTo(Dataset::class);
     }
 
     protected static function newFactory(): BestModelFactory

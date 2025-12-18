@@ -21,7 +21,6 @@ final class StoreBestModel
         $bestModel = BestModel::updateOrCreate(
             [
                 'problem_detail_id' => $problemDetail->id,
-                'dataset_id' => $problemDetail->dataset_id,
             ],
             [
                 'path' => $request->validated()['model_path'],
@@ -30,6 +29,6 @@ final class StoreBestModel
             ]
         );
 
-        return BestModelResource::make($bestModel->load('problemDetail', 'dataset.user'));
+        return BestModelResource::make($bestModel->load('problemDetail.dataset.user'));
     }
 }
