@@ -45,7 +45,6 @@ dataset('dataset', [
         ]);
 
         $this->bestModel = BestModel::factory()->create([
-            'dataset_id' => $this->dataset->id,
             'problem_detail_id' => $this->problemDetail->id,
             'path' => 'test_model', // Ensure it exists in the ML engine for the test
         ]);

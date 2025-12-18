@@ -9,7 +9,6 @@ use App\Http\Resources\Dataset\DatasetResource;
 use App\Models\Dataset;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -22,7 +21,6 @@ final class StoreDataset
         $dataset = Dataset::create([
             'path' => self::storeFile($request->validated()['dataset'], auth()->user()),
             'column_names' => self::getHeaders($request->validated()['dataset']),
-            ...Arr::except($request->validated(), 'dataset'),
         ]);
 
         return DatasetResource::make($dataset);

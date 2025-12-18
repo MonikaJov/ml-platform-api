@@ -69,7 +69,6 @@ it('stores best model', function (array $payload) {
             'name',
             'performance',
             'problem_detail',
-            'dataset',
             'created_at',
             'updated_at',
         ])
@@ -81,7 +80,7 @@ it('stores best model', function (array $payload) {
             'created_at',
             'updated_at',
         ])
-        ->and($response->json('dataset'))->toHaveKeys([
+        ->and($response->json('problem_detail')['dataset'])->toHaveKeys([
             'id',
             'user',
             'created_at',
@@ -90,7 +89,6 @@ it('stores best model', function (array $payload) {
 
     $this->assertDatabaseHas('best_models', [
         'problem_detail_id' => $this->problemDetail->id,
-        'dataset_id' => $this->dataset->id,
         'path' => $payload['model_path'],
         'name' => $payload['model_type'],
         'performance' => json_encode($payload['performance']),
@@ -100,7 +98,6 @@ it('stores best model', function (array $payload) {
 it('updates best model with the same problem detail', function (array $payload) {
     BestModel::factory()->create([
         'problem_detail_id' => $this->problemDetail->id,
-        'dataset_id' => $this->dataset->id,
         'path' => 'Old_Model_Path',
         'name' => 'Old_Model_Type',
         'performance' => json_encode(['r2' => 0.5]),
@@ -120,7 +117,6 @@ it('updates best model with the same problem detail', function (array $payload) 
 
     $this->assertDatabaseHas('best_models', [
         'problem_detail_id' => $this->problemDetail->id,
-        'dataset_id' => $this->dataset->id,
         'path' => $payload['model_path'],
         'name' => $payload['model_type'],
         'performance' => json_encode($payload['performance']),

@@ -29,7 +29,6 @@ dataset('dataset data', [
             'user_id' => $this->user->id,
         ]);
         $this->bestModel = BestModel::factory()->create([
-            'dataset_id' => $this->dataset1->id,
             'problem_detail_id' => ProblemDetail::factory()->create([
                 'dataset_id' => $this->dataset1->id,
             ])->id,
@@ -43,7 +42,6 @@ dataset('dataset data', [
             'user_id' => $this->user->id,
         ]);
         $this->bestModel = BestModel::factory()->create([
-            'dataset_id' => $this->dataset2->id,
             'problem_detail_id' => ProblemDetail::factory()->create([
                 'dataset_id' => $this->dataset2->id,
             ])->id,
@@ -72,7 +70,6 @@ it('lists datasets without filters', function () {
             'id',
             'problem_details',
             'name',
-            'has_null',
             'name',
             'column_names',
             'created_at',

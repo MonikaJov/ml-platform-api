@@ -21,7 +21,6 @@ final class BestModelResource extends BaseJsonResource
             'id' => $this->id,
             'path' => $this->path,
             'problem_detail' => ProblemDetailResource::make($this->whenLoaded('problemDetail')),
-            'dataset' => DatasetResource::make($this->whenLoaded('dataset')),
             'name' => $this->name,
             'performance' => $this->performance,
             'created_at' => $this->created_at,

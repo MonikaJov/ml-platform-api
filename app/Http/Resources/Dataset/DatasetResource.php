@@ -23,7 +23,6 @@ final class DatasetResource extends BaseJsonResource
             'problem_details' => ProblemDetailResource::make($this->whenLoaded('problemDetail')),
             'name' => $this->name,
             'column_names' => $this->column_names,
-            'has_null' => $this->has_null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

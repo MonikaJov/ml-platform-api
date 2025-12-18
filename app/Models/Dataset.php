@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Storage;
  * @property string $path
  * @property int $user_id
  * @property string $column_names
- * @property bool $has_null
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property string $full_path
@@ -32,10 +31,6 @@ final class Dataset extends Model
     use HasFactory;
 
     protected $guarded = [];
-
-    protected $casts = [
-        'has_null' => 'boolean',
-    ];
 
     /** @return BelongsTo<User, covariant Dataset> */
     public function user(): BelongsTo

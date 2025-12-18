@@ -23,7 +23,6 @@ class DatasetFactory extends Factory
             'path' => $path,
             'user_id' => $user->id,
             'column_names' => '',
-            'has_null' => $this->faker->boolean(30),
             'created_at' => Carbon::now(),
         ];
     }
